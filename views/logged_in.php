@@ -13,6 +13,7 @@ echo WORDING_YOU_ARE_LOGGED_IN_AS . $_SESSION['user_name'] . "<br />";
     <?php if( $_SESSION['is_admin'] ||  $_SESSION['is_moderator'] ){?>
     <a href="groups.php">Add Groups</a><br>
     <a href="users.php">Add User</a><br>
+	<a href="keywords.php">Add Keywords</a><br>
     <?php }?>
 </div>
 
