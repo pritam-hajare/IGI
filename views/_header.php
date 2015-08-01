@@ -76,3 +76,19 @@ if (isset($groups)) {
     }
 }
 ?>
+
+<?php
+// show potential errors / feedback (from registration object)
+if (isset($users)) {
+    if ($users->errors) {
+        foreach ($users->errors as $error) {
+            echo $error;
+        }
+    }
+    if ($users->messages) {
+        foreach ($users->messages as $message) {
+            echo $message;
+        }
+    }
+}
+?>

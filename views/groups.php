@@ -1,5 +1,7 @@
 <?php include('_header.php'); ?>
-
+<?php if(!( $_SESSION['is_admin'] ||  $_SESSION['is_moderator'])){
+	echo 'You are not authorised to access this page.';exit;
+}?>
 <!-- show registration form, but only if we didn't submit already -->
 <?php if (!$groups->addgroup_successful) { ?>
 <form method="post" action="groups.php" name="groupsform">

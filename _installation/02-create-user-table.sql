@@ -97,6 +97,9 @@ CREATE TABLE IF NOT EXISTS `igi`.`users` (
  UNIQUE KEY `user_email` (`user_email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='user data';
 
+-- add two more columns is_admin and is_moderator
+
+ALTER TABLE `users` ADD `is_admin` TINYINT NOT NULL DEFAULT '0' COMMENT 'for admin user value will be 1' AFTER `groupid`, ADD `is_moderator` TINYINT NOT NULL DEFAULT '0' COMMENT 'if user is moderator then value will be 1' AFTER `is_admin`;
 
 --
 -- Indexes for dumped tables

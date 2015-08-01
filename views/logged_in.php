@@ -10,8 +10,10 @@ echo WORDING_YOU_ARE_LOGGED_IN_AS . $_SESSION['user_name'] . "<br />";
 <div>
     <a href="index.php?logout"><?php echo WORDING_LOGOUT; ?></a><br>
     <a href="edit.php"><?php echo WORDING_EDIT_USER_DATA; ?></a><br>
+    <?php if( $_SESSION['is_admin'] ||  $_SESSION['is_moderator'] ){?>
     <a href="groups.php">Add Groups</a><br>
     <a href="users.php">Add User</a><br>
+    <?php }?>
 </div>
 
 <?php include('_footer.php'); ?>
