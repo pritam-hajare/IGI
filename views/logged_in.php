@@ -11,8 +11,9 @@ echo WORDING_YOU_ARE_LOGGED_IN_AS . $_SESSION['user_name'] . "<br />";
     <a href="index.php?logout"><?php echo WORDING_LOGOUT; ?></a><br>
     <a href="edit.php"><?php echo WORDING_EDIT_USER_DATA; ?></a><br>
     <?php if( $_SESSION['is_admin'] ||  $_SESSION['is_moderator'] ){?>
+    <a href="users.php">Users</a><br>
     <a href="groups.php">Add Groups</a><br>
-    <a href="users.php">Add User</a><br>
+    <a href="users.php?action=adduser">Add User</a><br>
 	<a href="keywords.php">Add Keywords</a><br>
     <?php }?>
 </div>

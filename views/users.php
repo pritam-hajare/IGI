@@ -2,42 +2,81 @@
 <?php if(!( $_SESSION['is_admin'] ||  $_SESSION['is_moderator'])){
 	echo 'You are not authorised to access this page.';exit;
 }?>
-<!-- show user form, but only if we didn't submit already -->
-<?php if (!$users->adduser_successful) { ?>
-<form method="post" action="users.php" name="usersform">
-	<label for="groupid">Groups</label>
-	<select name="groupid">
-  		<?php echo implode("\n", $users->getGroups()); ?>
-	</select>
-	<br><br>
-    <label for="user_name">Username</label>
-    <input id="user_name" type="text" pattern="[a-zA-Z0-9]{2,64}" name="user_name" required />
-	<br>
-	<label for="user_firstname">First Name</label>
-    <input id="user_firstname" type="text" name="user_firstname" required />
-	<br>
-	<label for="user_lastname">Last Name</label>
-    <input id="user_lastname" type="text"  name="user_lastname" required />
-	<br>
-	<label for="user_mobile">Mobile</label>
-    <input id="user_mobile" type="text" pattern="[0-9]{1,10}"  name="user_mobile" required />
-	<br>
-    <label for="user_email"><?php echo WORDING_REGISTRATION_EMAIL; ?></label>
-    <input id="user_email" type="email" name="user_email" required />
+<?php $allUsers = $users->getUsers();
+	if (!empty($users)) { 
+?>
+<script type="text/javascript" src="libraries/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="libraries/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="libraries/css/jquery.dataTables.css"/>
+<style>
+	tfoot input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+</style>
 
-    <label for="user_password_new"><?php echo WORDING_REGISTRATION_PASSWORD; ?></label>
-    <input id="user_password_new" type="password" name="user_password_new" pattern=".{6,}" required autocomplete="off" />
-
-    <label for="user_password_repeat"><?php echo WORDING_REGISTRATION_PASSWORD_REPEAT; ?></label>
-    <input id="user_password_repeat" type="password" name="user_password_repeat" pattern=".{6,}" required autocomplete="off" />
-
-    <label>Moderator</label>
-	<input type="checkbox" name="is_moderator" value="1" />
-	<br>
-
-    <input type="submit" name="addusers" value="Add User" />
-</form>
+<table id="example" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>User Name</th>
+                <th>Email</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Is Moderator</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+ 		<tfoot>
+        <tr>
+                <th>User Name</th>
+                <th>Email</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Is Moderator</th>
+                <th>Status</th>
+                <th>Action</th>
+         </tr>
+ 		</tfoot>
+        <tbody>
+        <?php foreach ($allUsers as $K=>$v){ $user_id = $v['user_id']; ?>
+            <tr>
+                <td><?php echo $v['user_name']; ?></td>
+                <td><?php echo $v['user_email']; ?></td>
+                <td><?php echo $v['user_firstname']; ?></td>
+                <td><?php echo $v['user_lastname']; ?></td>
+                <td><?php echo $v['is_moderator'] ? 'Yes' : 'No'; ?></td>
+                <td><?php echo $v['user_active'] ? 'Yes' : 'No'; ?></td>
+                <td><a href="<?php echo "users.php?action=editUser&user_id=$user_id"; ?>" target="_blank" /> Edit</a></td>
+            </tr>
+         <?php }?>   
+        </tbody>
+    </table>
 <?php } ?>
+<script type="text/javascript">
+$(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#example tfoot th').each( function () {
+        var title = $('#example thead th').eq( $(this).index() ).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    } );
+ 
+    // DataTable
+    var table = $('#example').DataTable();
+ 
+    // Apply the search
+    table.columns().every( function () {
+        var that = this;
+ 
+        $( 'input', this.footer() ).on( 'keyup change', function () {
+            that
+                .search( this.value )
+                .draw();
+        } );
+    } );
+} );
+</script>
 
     <a href="index.php">Back</a>
 

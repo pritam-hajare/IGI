@@ -67,6 +67,21 @@ class Users
         }
     }
 
+    public function getUsers()
+    {
+    	// if database connection opened
+    	if ($this->databaseConnection()) {
+    		// database query, getting all the info of the selected user
+    		$query_user = $this->db_connection->prepare('SELECT * FROM users WHERE user_name != :user_name');
+    		$query_user->bindValue(':user_name', $_SESSION['user_name'], PDO::PARAM_STR);
+    		$query_user->execute();
+    		// get result row (as an object)
+    		return $query_user->fetchAll(PDO::FETCH_ASSOC);
+    	} else {
+    		return false;
+    	}
+    }
+    
     /**
      * handles the entire registration process. checks all error possibilities, and creates a new user in the database if
      * everything is fine
