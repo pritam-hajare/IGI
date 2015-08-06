@@ -2,15 +2,66 @@
 <?php if(!( $_SESSION['is_admin'] ||  $_SESSION['is_moderator'])){
 	echo 'You are not authorised to access this page.';exit;
 }?>
-<!-- show registration form, but only if we didn't submit already -->
-<?php if (!$Keywords->addkeywords_successful) { ?>
-<form method="post" action="Keywords.php" name="groupsform">
-    <label for="keyword">Keyword</label>
-    <input id="keyword" type="text" pattern="[a-zA-Z0-9]{2,64}" name="keyword" required />
+<?php $allKeywords = $keywords->getKeywords();
+	if (!empty($keywords)) { 
+?>
+<script type="text/javascript" src="libraries/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="libraries/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="libraries/css/jquery.dataTables.css"/>
+<style>
+	tfoot input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+</style>
 
-    <input type="submit" name="Keyword" value="Add Keyword" />
-</form>
+<table id="example" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Keyword</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+ 		<tfoot>
+        <tr>
+                <th>Keyword</th>
+                <th>Action</th>
+         </tr>
+ 		</tfoot>
+        <tbody>
+        <?php foreach ($allKeywords as $K=>$v){ $keyid = $v['keyid']; ?>
+            <tr>
+                <td><?php echo $v['keywords']; ?></td>
+                <td><a href="<?php echo "keywords.php?action=editKeywords&keyid=$keyid"; ?>" target="_blank" /> Edit</a></td>
+            </tr>
+         <?php }?>   
+        </tbody>
+    </table>
 <?php } ?>
+<script type="text/javascript">
+$(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#example tfoot th').each( function () {
+        var title = $('#example thead th').eq( $(this).index() ).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    } );
+ 
+    // DataTable
+    var table = $('#example').DataTable();
+ 
+    // Apply the search
+    table.columns().every( function () {
+        var that = this;
+ 
+        $( 'input', this.footer() ).on( 'keyup change', function () {
+            that
+                .search( this.value )
+                .draw();
+        } );
+    } );
+} );
+</script>
 
     <a href="index.php">Back</a>
 

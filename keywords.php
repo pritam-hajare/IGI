@@ -25,4 +25,12 @@ require_once('classes/Keywords.php');
 $Keywords = new Keywords();
 
 // showing the register view (with the registration form, and messages/errors)
-include("views/keywords.php");
+
+if (isset($_GET["action"]) && $_GET["action"] == 'addKeywords' ) {
+	// showing the user view (with the users form, and messages/errors)
+	include("views/addKeywords.php");
+}elseif(isset($_GET["action"]) && $_GET["action"] == 'editKeywords'){
+	include("views/editKeywords.php");
+}else{
+	include("views/keywords.php");
+}

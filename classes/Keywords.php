@@ -31,8 +31,8 @@ class Keywords
     {
         session_start();
         // if we have such a POST request, call the registerNewUser() method
-        if (isset($_POST["keyword"])) {
-            $this->addKeyword($_POST['keyword']);
+        if (isset($_POST["addkeywords"])) {
+            $this->addKeyword($_POST);
         } /*else if (isset($_GET["id"]) && isset($_GET["verification_code"])) {
             $this->verifyNewUser($_GET["id"], $_GET["verification_code"]);
         }*/
@@ -69,10 +69,10 @@ class Keywords
      * handles the entire add group process. checks all error possibilities, and creates a new user in the database if
      * everything is fine
      */
-    private function addKeyword($keyword)
+    private function addKeyword($data)
     {
         // we just remove extra space on username and email
-        $keyword  = trim($keyword);
+        $keyword  = trim($data['keyword']]);
 
         // check provided data validity
         // TODO: check for "return true" case early, so put this first
@@ -112,4 +112,9 @@ class Keywords
         }
     }
 
+    public function getKeywords()
+    {
+		return false;
+    }
+	
 }
