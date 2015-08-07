@@ -3,7 +3,7 @@
 	echo 'You are not authorised to access this page.';exit;
 }?>
 <?php $allUsers = $users->getUsers();
-	if (!empty($users)) { 
+	if (!empty($allUsers)) { 
 ?>
 <script type="text/javascript" src="libraries/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="libraries/js/jquery.dataTables.min.js"></script>

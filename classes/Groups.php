@@ -64,6 +64,20 @@ class Groups
             }
         }
     }
+    
+    public function getGroups()
+    {
+    	// if database connection opened
+    	if ($this->databaseConnection()) {
+    		// database query, getting all the info of the selected user
+    		$query_groups = $this->db_connection->prepare('SELECT * FROM igi_groups');
+    		$query_groups->execute();
+    		// get result row (as an object)
+    		return $query_groups->fetchAll(PDO::FETCH_ASSOC);
+    	} else {
+    		return false;
+    	}
+    }
 
     /**
      * handles the entire add group process. checks all error possibilities, and creates a new user in the database if

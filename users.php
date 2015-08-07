@@ -22,11 +22,12 @@ require_once('classes/Users.php');
 
 // so this single line handles the entire users process.
 $users = new Users();
-
+//echo '<pre>'; print_r($_POST); die();
 if (isset($_GET["action"]) && $_GET["action"] == 'addUser' ) {
 	// showing the user view (with the users form, and messages/errors)
 	include("views/addUser.php");
 }elseif(isset($_GET["action"]) && $_GET["action"] == 'editUser'){
+	$user_id = $_GET["user_id"];
 	include("views/editUser.php");
 }else{
 	include("views/users.php");

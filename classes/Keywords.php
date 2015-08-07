@@ -72,7 +72,7 @@ class Keywords
     private function addKeyword($data)
     {
         // we just remove extra space on username and email
-        $keyword  = trim($data['keyword']]);
+        $keyword  = trim($data['keyword']);
 
         // check provided data validity
         // TODO: check for "return true" case early, so put this first
@@ -114,7 +114,16 @@ class Keywords
 
     public function getKeywords()
     {
-		return false;
+    // if database connection opened
+    	if ($this->databaseConnection()) {
+    		// database query, getting all the info of the selected user
+    		$query_user = $this->db_connection->prepare('SELECT * FROM igi_keywords');
+    		$query_user->execute();
+    		// get result row (as an object)
+    		return $query_user->fetchAll(PDO::FETCH_ASSOC);
+    	} else {
+    		return false;
+    	}
     }
 	
 }

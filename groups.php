@@ -24,5 +24,12 @@ require_once('classes/Groups.php');
 // so this single line handles the entire registration process.
 $groups = new Groups();
 
-// showing the register view (with the registration form, and messages/errors)
-include("views/groups.php");
+if (isset($_GET["action"]) && $_GET["action"] == 'addGroup' ) {
+	// showing the user view (with the users form, and messages/errors)
+	include("views/addGroup.php");
+}elseif(isset($_GET["action"]) && $_GET["action"] == 'editGroup'){
+	include("views/editGroup.php");
+}else{
+	include("views/groups.php");
+}
+

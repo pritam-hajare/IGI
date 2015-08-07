@@ -14,6 +14,10 @@ class Users
      */
     public  $adduser_successful  = false;
     /**
+     * @var bool success state of registration
+     */
+    public  $edituser_successful  = false;
+    /**
      * @var array collection of groups
      */
     public  $groups                   = array();
@@ -33,10 +37,13 @@ class Users
     public function __construct()
     {
         session_start();
-
+		
         // if we have such a POST request, call the registerNewUser() method
         if (isset($_POST["addusers"])) {
             $this->addNewUser($_POST);
+        }elseif(isset($_POST["edituser"])){
+        	//var_dump($_POST);die('in');
+        	$this->addNewUser($_POST, $_POST['user_id']);
         } 
     }
 
@@ -82,30 +89,49 @@ class Users
     	}
     }
     
+    public function getUserData($user_id)
+    {
+    	// if database connection opened
+    	if ($this->databaseConnection()) {
+    		// database query, getting all the info of the selected user
+    		$query_user = $this->db_connection->prepare('SELECT * FROM users WHERE user_id = :user_id');
+    		$query_user->bindValue(':user_id', $user_id, PDO::PARAM_STR);
+    		$query_user->execute();
+    		// get result row (as an object)
+    		return $query_user->fetchObject();
+    	} else {
+    		return false;
+    	}
+    }
+    
     /**
      * handles the entire registration process. checks all error possibilities, and creates a new user in the database if
      * everything is fine
      */
-    private function addNewUser($data)
+    private function addNewUser($data, $user_id = null)
     {
     	//echo '<pre>';
     	//print_r($data);die();
         // we just remove extra space on username and email
         $user_name  = trim($data['user_name']);
         $user_email = trim($data['user_email']);
-        $user_password = trim($data['user_password_new']);
-        $user_password_repeat = trim($data['user_password_repeat']);
-
+        if(is_null($user_id)){
+        	$user_password = trim($data['user_password_new']);
+        	$user_password_repeat = trim($data['user_password_repeat']);
+        }
         // check provided data validity
         // TODO: check for "return true" case early, so put this first
         if (empty($user_name)) {
             $this->errors[] = MESSAGE_USERNAME_EMPTY;
         } elseif (empty($user_password) || empty($user_password_repeat)) {
-            $this->errors[] = MESSAGE_PASSWORD_EMPTY;
+        	if(is_null($user_id))
+        	$this->errors[] = MESSAGE_PASSWORD_EMPTY;
         } elseif ($user_password !== $user_password_repeat) {
-            $this->errors[] = MESSAGE_PASSWORD_BAD_CONFIRM;
+        	if(is_null($user_id))
+        	$this->errors[] = MESSAGE_PASSWORD_BAD_CONFIRM;
         } elseif (strlen($user_password) < 6) {
-            $this->errors[] = MESSAGE_PASSWORD_TOO_SHORT;
+        	if(is_null($user_id))
+        	$this->errors[] = MESSAGE_PASSWORD_TOO_SHORT;
         } elseif (strlen($user_name) > 64 || strlen($user_name) < 2) {
             $this->errors[] = MESSAGE_USERNAME_BAD_LENGTH;
         } elseif (!preg_match('/^[a-z\d]{2,64}$/i', $user_name)) {
@@ -115,7 +141,8 @@ class Users
         } elseif (strlen($user_email) > 64) {
             $this->errors[] = MESSAGE_EMAIL_TOO_LONG;
         } elseif (!filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
-            $this->errors[] = MESSAGE_EMAIL_INVALID;
+        	if(is_null($user_id))
+        	$this->errors[] = MESSAGE_EMAIL_INVALID;
 
         // finally if all the above checks are ok
         } else if ($this->databaseConnection()) {
@@ -133,6 +160,7 @@ class Users
                     $this->errors[] = ($result[$i]['user_name'] == $user_name) ? MESSAGE_USERNAME_EXISTS : MESSAGE_EMAIL_ALREADY_EXISTS;
                 }
             } else {
+            	if(is_null($user_id)){
                 // check if we have a constant HASH_COST_FACTOR defined (in config/hashing.php),
                 // if so: put the value into $hash_cost_factor, if not, make $hash_cost_factor = null
                 $hash_cost_factor = (defined('HASH_COST_FACTOR') ? HASH_COST_FACTOR : null);
@@ -144,40 +172,58 @@ class Users
                 $user_password_hash = password_hash($user_password, PASSWORD_DEFAULT, array('cost' => $hash_cost_factor));
                 // generate random hash for email verification (40 char string)
                 $user_activation_hash = sha1(uniqid(mt_rand(), true));
+            	}
 				$is_moderator = isset($data['is_moderator']) ? $data['is_moderator'] : 0;
                 // write new users data into database
-                $query_new_user_insert = $this->db_connection->prepare('INSERT INTO users (user_name, user_password_hash, user_email, user_firstname, user_lastname, user_mobile, groupid, is_moderator, user_activation_hash, user_registration_ip, user_registration_datetime) VALUES(:user_name, :user_password_hash, :user_email, :user_firstname, :user_lastname, :user_mobile, :groupid, :is_moderator, :user_activation_hash, :user_registration_ip, now())');
+				if(is_null($user_id)){
+                	$query_new_user_insert = $this->db_connection->prepare('INSERT INTO users (user_name, user_password_hash, user_email, user_firstname, user_lastname, user_mobile, groupid, is_moderator, user_activation_hash, user_registration_ip, user_registration_datetime) VALUES(:user_name, :user_password_hash, :user_email, :user_firstname, :user_lastname, :user_mobile, :groupid, :is_moderator, :user_activation_hash, :user_registration_ip, now())');
+                	$query_new_user_insert->bindValue(':user_password_hash', $user_password_hash, PDO::PARAM_STR);
+                	$query_new_user_insert->bindValue(':user_activation_hash', $user_activation_hash, PDO::PARAM_STR);
+                	$query_new_user_insert->bindValue(':user_registration_ip', $_SERVER['REMOTE_ADDR'], PDO::PARAM_STR);
+				}else{
+					$query_new_user_insert = $this->db_connection->prepare('UPDATE users 
+																			set user_name = :user_name, 
+																				user_email = :user_email, 
+																				user_firstname = :user_firstname, 
+																				user_lastname = :user_lastname, 
+																				user_mobile = :user_mobile, 
+																				groupid = :groupid, 
+																				is_moderator = :is_moderator 
+																			WHERE user_id = :user_id');
+					$query_new_user_insert->bindValue(':user_id', $user_id, PDO::PARAM_STR);
+				}
                 $query_new_user_insert->bindValue(':user_name', $user_name, PDO::PARAM_STR);
-                $query_new_user_insert->bindValue(':user_password_hash', $user_password_hash, PDO::PARAM_STR);
                 $query_new_user_insert->bindValue(':user_email', $user_email, PDO::PARAM_STR);
                 $query_new_user_insert->bindValue(':user_firstname', trim($data['user_firstname']), PDO::PARAM_STR);
                 $query_new_user_insert->bindValue(':user_lastname', trim($data['user_lastname']), PDO::PARAM_STR);
                 $query_new_user_insert->bindValue(':user_mobile', trim($data['user_mobile']), PDO::PARAM_STR);
                 $query_new_user_insert->bindValue(':groupid', trim($data['groupid']), PDO::PARAM_STR);
                 $query_new_user_insert->bindValue(':is_moderator', $is_moderator, PDO::PARAM_STR);
-                $query_new_user_insert->bindValue(':user_activation_hash', $user_activation_hash, PDO::PARAM_STR);
-                $query_new_user_insert->bindValue(':user_registration_ip', $_SERVER['REMOTE_ADDR'], PDO::PARAM_STR);
+                
                 $query_new_user_insert->execute();
-
-                // id of new user
-                $user_id = $this->db_connection->lastInsertId();
-
-                if ($query_new_user_insert) {
-                    // send a verification email
-                    if ($this->sendVerificationEmail($user_id, $user_email, $user_activation_hash)) {
-                        // when mail has been send successfully
-                        $this->messages[] = MESSAGE_VERIFICATION_MAIL_SENT;
-                        $this->registration_successful = true;
-                    } else {
-                        // delete this users account immediately, as we could not send a verification email
-                        $query_delete_user = $this->db_connection->prepare('DELETE FROM users WHERE user_id=:user_id');
-                        $query_delete_user->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-                        $query_delete_user->execute();
-
-                        $this->errors[] = MESSAGE_VERIFICATION_MAIL_ERROR;
-                    }
-                } else {
-                    $this->errors[] = MESSAGE_REGISTRATION_FAILED;
+                if(is_null($user_id)){
+	                // id of new user
+	                $user_id = $this->db_connection->lastInsertId();
+	
+	                if ($query_new_user_insert) {
+	                    // send a verification email
+	                    if ($this->sendVerificationEmail($user_id, $user_email, $user_activation_hash)) {
+	                        // when mail has been send successfully
+	                        $this->messages[] = MESSAGE_VERIFICATION_MAIL_SENT;
+	                        $this->registration_successful = true;
+	                    } else {
+	                        // delete this users account immediately, as we could not send a verification email
+	                        $query_delete_user = $this->db_connection->prepare('DELETE FROM users WHERE user_id=:user_id');
+	                        $query_delete_user->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+	                        $query_delete_user->execute();
+	
+	                        $this->errors[] = MESSAGE_VERIFICATION_MAIL_ERROR;
+	                    }
+	                } else {
+	                    $this->errors[] = MESSAGE_REGISTRATION_FAILED;
+	                }
+                }else{
+                	$this->edituser_successful = true;
                 }
             }
         }
@@ -253,7 +299,7 @@ class Users
         }
     }
     
-    public function getGroups(){
+    public function getGroups($groupid = null){
     	if ($this->databaseConnection()) {
     		// check if username or email already exists
     		$query_check_user_name = $this->db_connection->prepare('SELECT groupid, groupname FROM igi_groups');
@@ -264,9 +310,13 @@ class Users
     		// TODO: this is really awful!
     		if (count($result) > 0) {
     			for ($i = 0; $i < count($result); $i++) {
-    				$groupid = $result[$i]['groupid'];
+    				$group_id = $result[$i]['groupid'];
     				$groupname = $result[$i]['groupname'];
-    				$this->groups[] = "<option value='".$groupid."'>".$groupname."</option>"; 
+    				if($group_id == $groupid){
+    					$this->groups[] = "<option value='".$group_id."' selected>".$groupname."</option>";
+    				}else{
+    					$this->groups[] = "<option value='".$group_id."'>".$groupname."</option>";
+    				} 
     			}
     		}
     	}
