@@ -11,9 +11,9 @@
   		<?php echo implode("\n", $users->getGroups($data->groupid)); ?>
 	</select>
 	<br><br>
-    <label for="user_name">Username</label>
-    <input id="user_name" type="text" pattern="[a-zA-Z0-9]{2,64}" name="user_name" value="<?php echo $data->user_name; ?>" required />
-	<br>
+    <label for="user_name">Username:</label>
+    <span><b><?php echo $data->user_name; ?></b></span>
+	<br><br>
 	<label for="user_firstname">First Name</label>
     <input id="user_firstname" type="text" name="user_firstname" value="<?php echo $data->user_firstname; ?>" required />
 	<br>
@@ -23,7 +23,7 @@
 	<label for="user_mobile">Mobile</label>
     <input id="user_mobile" type="text" pattern="[0-9]{1,10}"  name="user_mobile" value="<?php echo $data->user_mobile; ?>" required />
 	<br>
-    <label for="user_email"><?php echo WORDING_REGISTRATION_EMAIL; ?></label>
+    <label for="user_email">Email</label>
     <input id="user_email" type="email" name="user_email" value="<?php echo $data->user_email; ?>" required />
 
     <!--  <label for="user_password_new"><?php echo WORDING_REGISTRATION_PASSWORD; ?></label>
