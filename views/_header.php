@@ -91,4 +91,18 @@ if (isset($users)) {
         }
     }
 }
+
+if (isset($Keywords)) {
+	if ($Keywords->errors) {
+		foreach ($Keywords->errors as $error) {
+			echo $error;
+		}
+	}
+	if ($Keywords->messages) {
+		foreach ($Keywords->messages as $message) {
+			echo $message;
+		}
+	}
+}
+
 ?>

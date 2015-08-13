@@ -30,6 +30,7 @@ if (isset($_GET["action"]) && $_GET["action"] == 'addKeywords' ) {
 	// showing the user view (with the users form, and messages/errors)
 	include("views/addKeywords.php");
 }elseif(isset($_GET["action"]) && $_GET["action"] == 'editKeywords'){
+	$keyid = $_GET['keyid'];
 	include("views/editKeywords.php");
 }else{
 	include("views/keywords.php");

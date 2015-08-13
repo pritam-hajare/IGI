@@ -13,6 +13,11 @@ class Groups
      * @var bool success state of registration
      */
     public  $addgroup_successful  = false;
+    
+    /**
+     * @var bool success state of registration
+     */
+    public  $editgroup_successful  = false;
 
     /**
      * @var array collection of error messages
@@ -31,11 +36,11 @@ class Groups
     {
         session_start();
         // if we have such a POST request, call the registerNewUser() method
-        if (isset($_POST["groups"])) {
+        if (isset($_POST["addgroup"])) {
             $this->addGroup($_POST['groupname'], $_POST['description']);
-        } /*else if (isset($_GET["id"]) && isset($_GET["verification_code"])) {
-            $this->verifyNewUser($_GET["id"], $_GET["verification_code"]);
-        }*/
+        }else if (isset($_POST["editgroup"])) {
+            $this->editGroup($_POST);
+        }
     }
 
     /**
@@ -74,6 +79,20 @@ class Groups
     		$query_groups->execute();
     		// get result row (as an object)
     		return $query_groups->fetchAll(PDO::FETCH_ASSOC);
+    	} else {
+    		return false;
+    	}
+    }
+    
+    public function getGroupData($groupid)
+    {
+    	// if database connection opened
+    	if ($this->databaseConnection()) {
+    		$query_group = $this->db_connection->prepare('SELECT * FROM igi_groups WHERE groupid = :groupid');
+    		$query_group->bindValue(':groupid', $groupid, PDO::PARAM_STR);
+    		$query_group->execute();
+    		// get result row (as an object)
+    		return $query_group->fetchObject();
     	} else {
     		return false;
     	}
@@ -128,6 +147,62 @@ class Groups
                 }
             }
         }
+    }
+    
+    private function editGroup($data)
+    {
+    		//var_dump($data);die();
+    	// we just remove extra space on username and email
+    	$groupname  = trim($data['groupname']);
+    	$groupid = $data['groupid'];
+    	$original_groupname  = trim($data['original_groupname']);
+    	$description = trim($data['description']);
+    
+    	// check provided data validity
+    	// TODO: check for "return true" case early, so put this first
+    	if (empty($groupname)) {
+    		$this->errors[] = 'Group Namw Empty.';
+    	} elseif (empty($description)) {
+    		$this->errors[] = 'Description is empty.';
+    		// finally if all the above checks are ok
+    	} else if ($this->databaseConnection()) {
+    		// check if group  already exists
+    		if($groupname !== $original_groupname){
+    		$query_check_groupname = $this->db_connection->prepare('SELECT groupname FROM igi_groups WHERE groupname=:groupname');
+    		$query_check_groupname->bindValue(':groupname', $groupname, PDO::PARAM_STR);
+    		$query_check_groupname->execute();
+    		$result = $query_check_groupname->fetchAll();
+    		}else{
+    			$result = array();
+    		}
+    		// TODO: this is really awful!
+    		if (count($result) > 0) {
+    			for ($i = 0; $i < count($result); $i++) {
+    				$this->errors[] = ($result[$i]['groupname'] == $groupname) ? 'Group already exists' : '';
+    			}
+    		} else {
+    
+    			// write new users data into database
+    			$query_update = $this->db_connection->prepare('UPDATE igi_groups 
+    																SET	groupname = :groupname,
+    																	description = :description
+    															WHERE groupid = :groupid');
+    			$query_update->bindValue(':groupname', $groupname, PDO::PARAM_STR);
+    			$query_update->bindValue(':description', $description, PDO::PARAM_STR);
+    			$query_update->bindValue(':groupid', $groupid, PDO::PARAM_STR);
+	    		try {
+	    			$result = $query_update->execute();
+	    			if($result){
+	    				$this->messages[] = "Group successfuly updated";
+	    				$this->editgroup_successful = true;
+	    			}else{
+	    				$this->errors[] = "Something went wrong, please try again!";
+	    			}
+	    		} catch (Exception $e) {
+	    			$this->errors[] = "Something went wrong, please try again!";
+	    		}
+    		}
+    	}
     }
 
 }

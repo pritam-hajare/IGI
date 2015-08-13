@@ -11,7 +11,7 @@
     <label for="description">Description</label>
     <input id="description" type="textarea" name="description" required />
 
-    <input type="submit" name="groups" value="Add Groups" />
+    <input type="submit" name="addgroup" value="Add Groups" />
 </form>
 <?php } ?>
 

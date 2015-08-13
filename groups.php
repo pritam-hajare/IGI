@@ -28,6 +28,7 @@ if (isset($_GET["action"]) && $_GET["action"] == 'addGroup' ) {
 	// showing the user view (with the users form, and messages/errors)
 	include("views/addGroup.php");
 }elseif(isset($_GET["action"]) && $_GET["action"] == 'editGroup'){
+	$groupid = $_GET["groupid"];
 	include("views/editGroup.php");
 }else{
 	include("views/groups.php");

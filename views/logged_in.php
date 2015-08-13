@@ -15,7 +15,7 @@ echo WORDING_YOU_ARE_LOGGED_IN_AS . $_SESSION['user_name'] . "<br />";
     <a href="groups.php">Groups</a><br>
     <a href="groups.php?action=addGroup">Add Groups</a><br>
     <a href="users.php?action=adduser">Add User</a><br>
-	<a href="keywords.php?action=addkeywords">Add Keywords</a><br>
+	<a href="keywords.php?action=addKeywords">Add Keywords</a><br>
 	<a href="keywords.php">Keywords</a><br>
     <?php }?>
 </div>

@@ -13,6 +13,8 @@ class Keywords
      * @var bool success state of registration
      */
     public  $addkeywords_successful  = false;
+    
+    public  $editkeywords_successful  = false;
 
     /**
      * @var array collection of error messages
@@ -33,9 +35,9 @@ class Keywords
         // if we have such a POST request, call the registerNewUser() method
         if (isset($_POST["addkeywords"])) {
             $this->addKeyword($_POST);
-        } /*else if (isset($_GET["id"]) && isset($_GET["verification_code"])) {
-            $this->verifyNewUser($_GET["id"], $_GET["verification_code"]);
-        }*/
+        }else if (isset($_POST["editkeywords"])) {
+            $this->editKeyword($_POST);
+        }
     }
 
     /**
@@ -90,7 +92,7 @@ class Keywords
             // TODO: this is really awful!
             if (count($result) > 0) {
                 for ($i = 0; $i < count($result); $i++) {
-                    $this->errors[] = ($result[$i]['keyword'] == $keyword) ? 'Keyword already exists' : '';
+                    $this->errors[] = ($result[$i]['keywords'] == $keyword) ? 'Keyword already exists' : '';
                 }
             } else {
 
@@ -112,6 +114,58 @@ class Keywords
         }
     }
 
+    
+    private function editKeyword($data)
+    {
+    	// we just remove extra space on username and email
+    	$keyword  = trim($data['keyword']);
+    	$original_keyword  = trim($data['keyword']);
+    	$keyid = $data['keyid'];
+    
+    	// check provided data validity
+    	// TODO: check for "return true" case early, so put this first
+    	if (empty($keyword)) {
+    		$this->errors[] = 'Keyword Empty.';
+    		// finally if all the above checks are ok
+    	} else if ($this->databaseConnection()) {
+    		// check if group  already exists
+    		if($keyword !== $original_keyword){
+	    		$query_check_keyword = $this->db_connection->prepare('SELECT keywords FROM igi_keywords WHERE keywords=:keyword');
+	    		$query_check_keyword->bindValue(':keyword', $keyword, PDO::PARAM_STR);
+	    		$query_check_keyword->execute();
+	    		$result = $query_check_keyword->fetchAll();
+    		}else{
+    			$result = array();
+    		}
+    		// if username or/and email find in the database
+    		// TODO: this is really awful!
+    		if (count($result) > 0) {
+    			for ($i = 0; $i < count($result); $i++) {
+    				$this->errors[] = ($result[$i]['keywords'] == $keyword) ? 'Keyword already exists' : '';
+    			}
+    		} else {
+    
+    			// write new users data into database
+    			$query_update = $this->db_connection->prepare('UPDATE igi_keywords 
+    																		SET keywords = :keyword
+    																	 WHERE keyid = :keyid');
+    			$query_update->bindValue(':keyword', $keyword, PDO::PARAM_STR);
+    			$query_update->bindValue(':keyid', $keyid, PDO::PARAM_STR);
+    			try {
+	    			$result = $query_update->execute();
+	    			if($result){
+	    				$this->messages[] = "Keyword successfuly updated";
+	    				$this->editkeywords_successful= true;
+	    			}else{
+	    				$this->errors[] = "Something went wrong, please try again!";
+	    			}
+	    		} catch (Exception $e) {
+	    			$this->errors[] = "Something went wrong, please try again!";
+	    		}
+    		}
+    	}
+    }
+    
     public function getKeywords()
     {
     // if database connection opened
@@ -121,6 +175,20 @@ class Keywords
     		$query_user->execute();
     		// get result row (as an object)
     		return $query_user->fetchAll(PDO::FETCH_ASSOC);
+    	} else {
+    		return false;
+    	}
+    }
+    
+    public function getKeywordData($keyid)
+    {
+    	// if database connection opened
+    	if ($this->databaseConnection()) {
+    		$query_group = $this->db_connection->prepare('SELECT * FROM igi_keywords WHERE keyid = :keyid');
+    		$query_group->bindValue(':keyid', $keyid, PDO::PARAM_STR);
+    		$query_group->execute();
+    		// get result row (as an object)
+    		return $query_group->fetchObject();
     	} else {
     		return false;
     	}
