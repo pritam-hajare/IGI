@@ -180,6 +180,22 @@ class Keywords
     	}
     }
     
+    public function getKeyword($keyword)
+    {
+    	// if database connection opened
+    	if ($this->databaseConnection()) {
+    		// database query, getting all the info of the selected user
+    		$query_user = $this->db_connection->prepare('SELECT * FROM igi_keywords WHERE keywords LIKE :keyword');
+    		$query_user->bindValue(':keyword', "%$keyword%", PDO::PARAM_STR);
+    		$query_user->execute();
+    		
+    		// get result row (as an object)
+    		return $query_user->fetchAll(PDO::FETCH_ASSOC);
+    	} else {
+    		return false;
+    	}
+    }
+    
     public function getKeywordData($keyid)
     {
     	// if database connection opened

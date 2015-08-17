@@ -292,6 +292,7 @@ class Login
                 $_SESSION['user_email'] = $result_row->user_email;
                 $_SESSION['is_admin'] = $result_row->is_admin;
                 $_SESSION['is_moderator'] = $result_row->is_moderator;
+                $_SESSION['groupid'] = $result_row->groupid;
                 $_SESSION['user_logged_in'] = 1;
 
                 // declare user id, set the login status to true
