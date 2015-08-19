@@ -33,7 +33,7 @@ class Uploadfile
      	if (isset($_POST["uploadfile"])) {
      		$file = $_FILES['igifile'];
      		$data = $_POST;
-     		echo '<pre>'; print_r($_SESSION); print_r($file); print_r($data);die();
+     		//echo '<pre>'; print_r($_SESSION); print_r($file); print_r($data);var_dump(date("d-m-Y"), date("h", time()),  strtotime("now")); die();
             $this->uploadFile($data, $file);
         }
     }
@@ -95,89 +95,61 @@ class Uploadfile
         $user_id = $_SESSION['user_id'];
         $groupid = $_SESSION['groupid'];
         $moderator =  $_SESSION['is_moderator'];
-      
-        // check provided data validity
-        // TODO: check for "return true" case early, so put this first
-        /*if (empty($user_name)) {
-            $this->errors[] = MESSAGE_USERNAME_EMPTY;
-        } elseif (empty($user_password) || empty($user_password_repeat)) {
-            $this->errors[] = MESSAGE_PASSWORD_EMPTY;
-        } elseif ($user_password !== $user_password_repeat) {
-            $this->errors[] = MESSAGE_PASSWORD_BAD_CONFIRM;
-        } elseif (strlen($user_password) < 6) {
-            $this->errors[] = MESSAGE_PASSWORD_TOO_SHORT;
-        } elseif (strlen($user_name) > 64 || strlen($user_name) < 2) {
-            $this->errors[] = MESSAGE_USERNAME_BAD_LENGTH;
-        } elseif (!preg_match('/^[a-z\d]{2,64}$/i', $user_name)) {
-            $this->errors[] = MESSAGE_USERNAME_INVALID;
-        } elseif (empty($user_email)) {
-            $this->errors[] = MESSAGE_EMAIL_EMPTY;
-        } elseif (strlen($user_email) > 64) {
-            $this->errors[] = MESSAGE_EMAIL_TOO_LONG;
-        } elseif (!filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
-            $this->errors[] = MESSAGE_EMAIL_INVALID;
+        $filename = $file['name'];
+        $filepath = getcwd().'/upload/'.$_SESSION['user_name'].'_'.$_SESSION['user_id'];
 
-        // finally if all the above checks are ok
-        } else*/ if ($this->databaseConnection()) {
-            // check if username or email already exists
-            $query_check_user_name = $this->db_connection->prepare('SELECT user_name, user_email FROM users WHERE user_name=:user_name OR user_email=:user_email');
-            $query_check_user_name->bindValue(':user_name', $user_name, PDO::PARAM_STR);
-            $query_check_user_name->bindValue(':user_email', $user_email, PDO::PARAM_STR);
-            $query_check_user_name->execute();
-            $result = $query_check_user_name->fetchAll();
-
-            // if username or/and email find in the database
-            // TODO: this is really awful!
-            if (count($result) > 0) {
-                for ($i = 0; $i < count($result); $i++) {
-                    $this->errors[] = ($result[$i]['user_name'] == $user_name) ? MESSAGE_USERNAME_EXISTS : MESSAGE_EMAIL_ALREADY_EXISTS;
-                }
-            } else {
-                // check if we have a constant HASH_COST_FACTOR defined (in config/hashing.php),
-                // if so: put the value into $hash_cost_factor, if not, make $hash_cost_factor = null
-                $hash_cost_factor = (defined('HASH_COST_FACTOR') ? HASH_COST_FACTOR : null);
-
-                // crypt the user's password with the PHP 5.5's password_hash() function, results in a 60 character hash string
-                // the PASSWORD_DEFAULT constant is defined by the PHP 5.5, or if you are using PHP 5.3/5.4, by the password hashing
-                // compatibility library. the third parameter looks a little bit shitty, but that's how those PHP 5.5 functions
-                // want the parameter: as an array with, currently only used with 'cost' => XX.
-                $user_password_hash = password_hash($user_password, PASSWORD_DEFAULT, array('cost' => $hash_cost_factor));
-                // generate random hash for email verification (40 char string)
-                $user_activation_hash = sha1(uniqid(mt_rand(), true));
-				$is_moderator = isset($data['is_moderator']) ? $data['is_moderator'] : 0;
+		if ($this->databaseConnection()) {
                 // write new users data into database
-                $query_new_user_insert = $this->db_connection->prepare('INSERT INTO users (user_name, user_password_hash, user_email, user_firstname, user_lastname, user_mobile, groupid, is_moderator, user_activation_hash, user_registration_ip, user_registration_datetime) VALUES(:user_name, :user_password_hash, :user_email, :user_firstname, :user_lastname, :user_mobile, :groupid, :is_moderator, :user_activation_hash, :user_registration_ip, now())');
-                $query_new_user_insert->bindValue(':user_name', $user_name, PDO::PARAM_STR);
-                $query_new_user_insert->bindValue(':user_password_hash', $user_password_hash, PDO::PARAM_STR);
-                $query_new_user_insert->bindValue(':user_email', $user_email, PDO::PARAM_STR);
-                $query_new_user_insert->bindValue(':user_firstname', trim($data['user_firstname']), PDO::PARAM_STR);
-                $query_new_user_insert->bindValue(':user_lastname', trim($data['user_lastname']), PDO::PARAM_STR);
-                $query_new_user_insert->bindValue(':user_mobile', trim($data['user_mobile']), PDO::PARAM_STR);
-                $query_new_user_insert->bindValue(':groupid', trim($data['groupid']), PDO::PARAM_STR);
-                $query_new_user_insert->bindValue(':is_moderator', $is_moderator, PDO::PARAM_STR);
-                $query_new_user_insert->bindValue(':user_activation_hash', $user_activation_hash, PDO::PARAM_STR);
-                $query_new_user_insert->bindValue(':user_registration_ip', $_SERVER['REMOTE_ADDR'], PDO::PARAM_STR);
-                $query_new_user_insert->execute();
+                $query_insert = $this->db_connection->prepare('INSERT INTO igi_files (filename, filepath, user_id, groupid, keywords, tags, caption, active, moderator, createdate) VALUES (:filename, :filepath, :userid, :groupid, :keywords,  :tags, :caption, :active, :moderator,  now())');
+                $query_insert->bindValue(':filename', $filename);
+                $query_insert->bindValue(':filepath', mysql_real_escape_string($filepath));
+                $query_insert->bindValue(':userid', $user_id);
+                $query_insert->bindValue(':groupid', $groupid);
+                $query_insert->bindValue(':keywords', $keywords);
+                $query_insert->bindValue(':tags', $tags);
+                $query_insert->bindValue(':caption', $caption);
+                $query_insert->bindValue(':active', '1');
+                $query_insert->bindValue(':moderator', $moderator);
+                try{
+					$query_insert->execute();
+                }catch (Exception $e){
+                	echo $e->getMessage();
+                }
+                
 
                 // id of new user
-                $user_id = $this->db_connection->lastInsertId();
+                $fileid = $this->db_connection->lastInsertId();
 
-                if ($user_id) {
-                	$path = getcwd()."/upload/".$user_name."_".$user_id;
+                if ($fileid) {
+                	$path = getcwd()."/upload/".$_SESSION['user_name']."_".$user_id."/".date("d-m-Y")."/".date("h", time());
                 	try {
-                		if (mkdir($path, 0777, true)) {
-                			$this->messages[] = "User successfuly added";
+                		if(!file_exists($path)){
+	                		if (mkdir($path, 0777, true)) {
+	                			if ( move_uploaded_file( $file['tmp_name'], $path."/".$fileid."_".basename($file['name'] ) ) )
+	                			{
+	                				$this->messages[] = "File successfully uploaded";
+	                			}else{
+	                				$this->errors[] = 'Failed to upload file...';
+	                			}
+	                			
+	                		}else{
+	                			$this->errors[] = 'Failed to create folders...';
+	                		}
                 		}else{
-                			die('Failed to create folders...');
+                			if ( move_uploaded_file( $file['tmp_name'], $path."/".$fileid."_". basename($file['name'] ) ) )
+                			{
+                				$this->messages[] = "File successfully uploaded";
+                			}else{
+                				$this->errors[] = 'Failed to upload file...';
+                			}
                 		}
                 	} catch (Exception $e) {
                 		echo $e->getMessage();
                 	}
                 	
                 } else {
-                    $this->errors[] = MESSAGE_REGISTRATION_FAILED;
+                    $this->errors[] = 'Something went wrong, Please try again';
                 }
-            }
         }
     }
 }
