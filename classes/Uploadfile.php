@@ -102,10 +102,10 @@ class Uploadfile
                 // write new users data into database
                 $query_insert = $this->db_connection->prepare('INSERT INTO igi_files (filename, filepath, user_id, groupid, keywords, tags, caption, active, moderator, createdate) VALUES (:filename, :filepath, :userid, :groupid, :keywords,  :tags, :caption, :active, :moderator,  now())');
                 $query_insert->bindValue(':filename', $filename);
-                $query_insert->bindValue(':filepath', mysql_real_escape_string($filepath));
+                $query_insert->bindValue(':filepath', $filepath);
                 $query_insert->bindValue(':userid', $user_id);
                 $query_insert->bindValue(':groupid', $groupid);
-                $query_insert->bindValue(':keywords', $keywords);
+                $query_insert->bindValue(':keywords', rtrim($keywords, ','));
                 $query_insert->bindValue(':tags', $tags);
                 $query_insert->bindValue(':caption', $caption);
                 $query_insert->bindValue(':active', '1');
@@ -121,7 +121,8 @@ class Uploadfile
                 $fileid = $this->db_connection->lastInsertId();
 
                 if ($fileid) {
-                	$path = getcwd()."/upload/".$_SESSION['user_name']."_".$user_id."/".date("d-m-Y")."/".date("h", time());
+                	//$path = getcwd()."/upload/".$_SESSION['user_name']."_".$user_id."/".date("d-m-Y")."/".date("h", time());
+                	$path = getcwd()."/upload/".$_SESSION['user_name']."_".$user_id."/".date("d-m-Y");
                 	try {
                 		if(!file_exists($path)){
 	                		if (mkdir($path, 0777, true)) {
