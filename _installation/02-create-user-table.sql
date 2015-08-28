@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 26, 2015 at 12:40 AM
+-- Generation Time: Aug 28, 2015 at 01:54 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -31,15 +31,15 @@ CREATE TABLE IF NOT EXISTS `igi_files` (
   `filename` varchar(300) NOT NULL,
   `filepath` varchar(300) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `groupid` int(11) NOT NULL,
-  `keywords` varchar(500) NOT NULL,
-  `tags` varchar(500) NOT NULL,
-  `caption` varchar(500) NOT NULL,
+  `groupid` int(11) DEFAULT NULL,
+  `keywords` varchar(500) DEFAULT NULL,
+  `tags` varchar(500) DEFAULT NULL,
+  `caption` varchar(500) DEFAULT NULL,
   `createdate` datetime NOT NULL,
   `updatedate` datetime DEFAULT NULL,
   `active` int(11) DEFAULT '0',
   `moderator` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -132,7 +132,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `igi_files`
 --
 ALTER TABLE `igi_files`
-MODIFY `fileid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+MODIFY `fileid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=69;
 --
 -- AUTO_INCREMENT for table `igi_groups`
 --

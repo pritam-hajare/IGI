@@ -3,7 +3,7 @@
 /**
  * Handles the user operations
  */
-class Uploadfile
+class Files
 {
     /**
      * @var object $db_connection The database connection
@@ -80,6 +80,21 @@ class Uploadfile
     	}
     }
     
+    public function getFiles()
+    {
+    	// if database connection opened
+    	if ($this->databaseConnection()) {
+    		// database query, getting all the info of the selected user
+    		$query_user = $this->db_connection->prepare('SELECT * FROM igi_files WHERE user_id = :user_id');
+    		$query_user->bindValue(':user_id', $_SESSION['user_id']);
+    		$query_user->execute();
+    		// get result row (as an object)
+    		return $query_user->fetchAll(PDO::FETCH_ASSOC);
+    	} else {
+    		return false;
+    	}
+    }
+    
     /**
      * handles the entire registration process. checks all error possibilities, and creates a new user in the database if
      * everything is fine
@@ -102,7 +117,7 @@ class Uploadfile
                 // write new users data into database
                 $query_insert = $this->db_connection->prepare('INSERT INTO igi_files (filename, filepath, user_id, groupid, keywords, tags, caption, active, moderator, createdate) VALUES (:filename, :filepath, :userid, :groupid, :keywords,  :tags, :caption, :active, :moderator,  now())');
                 $query_insert->bindValue(':filename', $filename);
-                $query_insert->bindValue(':filepath', $filepath);
+                $query_insert->bindValue(':filepath', 'upload/'.$_SESSION['user_name'].'_'.$_SESSION['user_id']);
                 $query_insert->bindValue(':userid', $user_id);
                 $query_insert->bindValue(':groupid', $groupid);
                 $query_insert->bindValue(':keywords', rtrim($keywords, ','));
@@ -152,5 +167,68 @@ class Uploadfile
                     $this->errors[] = 'Something went wrong, Please try again';
                 }
         }
+    }
+    
+    public function uploadBulkFiles($data)
+    {
+    	//echo '<pre>';
+    	//print_r($data);die();
+    	// we just remove extra space on username and email
+    	$user_id = $data['user_id'];
+    	$user_name = $data['user_name'];
+    	$filename = $data['filename'];
+    	$filepath = $data['filepath'];;
+    	
+    	if ($this->databaseConnection()) {
+    		// write new users data into database
+    		$query_insert = $this->db_connection->prepare('INSERT INTO igi_files (filename, filepath, user_id, active, createdate) VALUES (:filename, :filepath, :userid, :active,  now())');
+    		$query_insert->bindValue(':filename', $filename);
+    		$query_insert->bindValue(':filepath', 'upload/'.$_SESSION['user_name'].'_'.$_SESSION['user_id']);
+    		$query_insert->bindValue(':userid', $user_id);
+    		$query_insert->bindValue(':active', '1');
+    		try{
+    			$query_insert->execute();
+    		}catch (Exception $e){
+    			echo $e->getMessage();
+    		}
+    
+    
+    		// id of new user
+    		$fileid = $this->db_connection->lastInsertId();
+    
+    		if ($fileid) {
+    			//$path = getcwd()."/upload/".$_SESSION['user_name']."_".$user_id."/".date("d-m-Y")."/".date("h", time());
+    			$path = $filepath."/".date("d-m-Y");
+    			try {
+    				if(!file_exists($path)){
+    					if (mkdir($path, 0777, true)) {
+    						if ( copy( $filepath."/".$filename, $path."/".$fileid."_".$filename ) )
+    						{
+    							unlink($filepath."/".$filename);
+    							$this->messages[] = "File successfully uploaded";
+    						}else{
+    							$this->errors[] = 'Failed to upload file...';
+    						}
+    
+    					}else{
+    						$this->errors[] = 'Failed to create folders...';
+    					}
+    				}else{
+    					if ( copy( $filepath."/".$filename, $path."/".$fileid."_".$filename ))
+    					{
+    						unlink($filepath."/".$filename);
+    						$this->messages[] = "File successfully uploaded";
+    					}else{
+    						$this->errors[] = 'Failed to upload file...';
+    					}
+    				}
+    			} catch (Exception $e) {
+    				echo $e->getMessage();
+    			}
+    			 
+    		} else {
+    			$this->errors[] = 'Something went wrong, Please try again';
+    		}
+    	}
     }
 }

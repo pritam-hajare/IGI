@@ -105,14 +105,14 @@ if (isset($Keywords)) {
 	}
 }
 
-if (isset($uploadFile)) {
-	if ($uploadFile->errors) {
-		foreach ($uploadFile->errors as $error) {
+if (isset($files)) {
+	if ($files->errors) {
+		foreach ($files->errors as $error) {
 			echo $error;
 		}
 	}
-	if ($uploadFile->messages) {
-		foreach ($uploadFile->messages as $message) {
+	if ($files->messages) {
+		foreach ($files->messages as $message) {
 			echo $message;
 		}
 	}

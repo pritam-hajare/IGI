@@ -18,9 +18,17 @@ require_once('translations/en.php');
 require_once('libraries/PHPMailer.php');
 
 // load the users class
-require_once('classes/Uploadfile.php');
+require_once('classes/Files.php');
 
 // so this single line handles the entire users process.
-$uploadFile = new Uploadfile();
-//echo '<pre>'; print_r($_POST); die();
-include("views/uploadFile.php");
+$files = new Files();
+
+if (isset($_GET["action"]) && $_GET["action"] == 'uploadFile' ) {
+	// showing the user view (with the users form, and messages/errors)
+	include("views/uploadFile.php");
+}elseif(isset($_GET["action"]) && $_GET["action"] == 'editUser'){
+	$user_id = $_GET["user_id"];
+	include("views/editUser.php");
+}else{
+	include("views/files.php");
+}

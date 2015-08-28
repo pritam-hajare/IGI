@@ -1,47 +1,40 @@
 <?php
+// include the config
+require_once('config/config.php');
+
+// load the users class
+require_once('classes/Files.php');
 
 function getDirContaints($dir, $results= array(), $backDir = ""){
 
-$files = scandir($dir);
-echo '<pre>'; print_r($files);
-foreach($files as $key => $value){
-	//echo $value;
+$allfiles = scandir($dir);
+$files = new Files();
+foreach($allfiles as $key => $value){
 	if(!in_array($value,array(".",".."))){
 		$timestamp = strtotime($value);
 		$path = realpath($dir . DIRECTORY_SEPARATOR . $value);
-		echo basename($path)."<br>";
+		$uploadDirInfo = explode("_", basename($path));
 		if(is_dir($path)){
 			$dir_files = scandir($path);
-			echo '<pre>'; print_r();
-		}
-		/*if(!is_dir($path)){
-			//$results[]=$path;
-			$copydir = $backDir . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . date("Y-m-d");
-			mkdir($copydir);
-			$newFile = $copydir . DIRECTORY_SEPARATOR . $value;
-			if(!copy($path, $newFile )){
-				//Log error Message
-			} else {
-				//Insert Into DataBase
-				//Image name
-				//get userid by username using folder from where we are picking image to move 
-				//upload date
+			foreach ($dir_files as $k=>$v){
+				if(!in_array($v,array(".",".."))){
+					$pth = realpath($path . DIRECTORY_SEPARATOR . $v);
+					if(!is_dir($pth)){
+						$data['filename'] = basename($pth);
+						$data['filepath'] = $path;
+						$data['user_id'] = $uploadDirInfo['1'];
+						$data['user_name'] = $uploadDirInfo['0'];
+						$files->uploadBulkFiles($data);
+					}
+				}
 			}
-		} else if(is_dir($path) && $value != '.' && $value != '..' && $value != '.git' && !$timestamp ){
-			getDirContaints($path, $result, $path);
-			//$results[]=$path;
-			$backDir = $path;
-		}*/
+		}
 	}
 }
-	return $results;
+	return 'Files uploaded successfuly';
 
 }
 
 print_r(getDirContaints('D:\Work\xampp\htdocs\IGI\upload'));
-
-function makedirs($dirpath, $mode = 0777){
-	return is_dir($dirpath) || mkdir($dirpath, $mode, true);
-}
 
 ?>
