@@ -15,22 +15,23 @@
         box-sizing: border-box;
     }
 </style>
-
-<table id="example" class="display" cellspacing="0" width="100%">
+<div id="main-content">
+<h2>Groups</h2><br>
+<table id="example" width="100%" border="0" cellspacing="5" cellpadding="5" style="border-collapse:collapse">
         <thead>
             <tr>
-                <th>Group Name</th>
-                <th>Description</th>
-                <th>Created Date</th>
-                <th>Action</th>
+                <th scope="col">Group Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Created Date</th>
+                <th scope="col">Action</th>
             </tr>
         </thead>
  		<tfoot>
         <tr>
-                <th>Group Name</th>
-                <th>Description</th>
-                <th>Created Date</th>
-                <th>Action</th>
+                <th scope="col">Group Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Created Date</th>
+                <th scope="col">Action</th>
          </tr>
  		</tfoot>
         <tbody>
@@ -44,6 +45,7 @@
          <?php }?>   
         </tbody>
     </table>
+</div>
 <?php } ?>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -68,7 +70,5 @@ $(document).ready(function() {
     } );
 } );
 </script>
-
-    <a href="index.php">Back</a>
 
 <?php include('_footer.php'); ?>

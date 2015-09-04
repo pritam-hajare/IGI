@@ -16,8 +16,9 @@
         box-sizing: border-box;
     }
 </style>
-
-<table id="example" class="display" cellspacing="0" width="100%">
+<div id="main-content">
+<h2>All Files</h2><br>
+<table id="example" width="100%" border="0" cellspacing="5" cellpadding="5" style="border-collapse:collapse">
         <thead>
             <tr>
                 <th>File</th>
@@ -62,7 +63,7 @@
             </tr>
          <?php }?>   
         </tbody>
-    </table>
+    </table></div>
 <?php } ?>
 <script type="text/javascript">
 $(document).ready(function() {

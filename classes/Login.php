@@ -289,6 +289,7 @@ class Login
                 // write user data into PHP SESSION [a file on your server]
                 $_SESSION['user_id'] = $result_row->user_id;
                 $_SESSION['user_name'] = $result_row->user_name;
+                $_SESSION['user_fullname'] = $result_row->user_firstname.' '.$result_row->user_lastname;
                 $_SESSION['user_email'] = $result_row->user_email;
                 $_SESSION['is_admin'] = $result_row->is_admin;
                 $_SESSION['is_moderator'] = $result_row->is_moderator;

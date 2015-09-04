@@ -1,0 +1,275 @@
+@charset "utf-8";
+/* CSS Document */
+*{
+	margin:0;
+	padding:0;
+}
+body{
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:13px;
+	color:#666666;
+}
+img{
+	border:0 none;
+}
+input{
+	outline:0 none;
+}
+.page{
+	width:980px;
+	margin:0 auto;
+	padding-top:15px;
+}
+.left{
+	float:left;
+}
+.right{
+	float:right;
+}
+ul, ol, li{
+	list-style:none;
+}
+a, a:hover{
+	text-decoration:none;
+	outline:none;
+}
+.left-side{
+	width:460px;
+}
+.main-content p{
+	color:#999999;
+	line-height:21px;
+	margin:45px 0 0 0;
+}
+.sign-in-block{
+	background:#ff6633;
+	width:324px;
+	padding:40px 35px;
+}
+.login-inputs ul li{
+	border-radius:30px;
+	-webkit-border-radius:30px;
+	-moz-border-radius:30px;
+	-o-border-radius:30px;
+	height:52px;
+	line-height:52px;
+	margin-bottom:18px;
+	padding: 0 0 0 52px;
+}
+.login-inputs ul li input{
+	border:none;
+	background:none;
+	color:#fff;
+	font-size:15px;
+	font-weight:bold;
+	height:52px;
+}
+.login-inputs ul li.username{
+	background:url(images/user-name-icon.png) no-repeat 20px center #ffa385;
+}
+.login-inputs ul li.user-password{
+	background:url(images/password-icon.png) no-repeat 20px center #ffa385;
+}
+.sign-in-block .controls{
+	text-align:center;
+}
+.controls .forget-password{
+	font-size:15px;
+	color:#fff;
+	padding-bottom:10px;
+	display:block;
+}
+.controls button{
+	background:#ff9900;
+	height:56px;
+	line-height:56px;
+	border-radius:30px;
+	-webkit-border-radius:30px;
+	-moz-border-radius:30px;
+	-o-border-radius:30px;
+	border:none;
+	font-size:15px;
+	color:#fff;
+	width:181px;
+	margin:20px 0;
+}
+.remember-me{
+	text-align:center;
+}
+.remember-me label{
+	font-size:15px;
+	color:#fff;
+}
+.user-register-link{
+	color:#fff;
+	display:block;
+	text-align:center;
+	font-size:15px;
+	text-decoration:underline;
+	margin-top:15px;
+}
+
+/* ======================================================================
+	Dashboard :: Start
+ * ======================================================================= */
+.dashboard-page .header{
+	overflow:hidden;
+	padding-bottom:20px;
+}
+.user-info{
+	padding-top: 15px;
+    margin-bottom: 10px;
+}
+.user-info .user-name{
+	font-size:13px;
+	color:#666666;
+	text-align:right; 
+	display:block;
+	margin:4px 10px 0 0;
+}
+.user-info .user-name span{
+	display:block; 
+}
+.user-info .log-out{
+	color:#ff6633;
+	display:block;
+	clear:both;
+	text-align:right;
+}
+.dashboard-page .page{
+	max-width:1200px;
+	width:100%;
+}
+.dashboard-page .container{
+	clear:both;
+	display:table;
+}
+.dashboard-page .container-inner{
+	display:table-row;
+}
+.dashboard-page #main-content{
+	background:#f2f2f2;
+	width:942px;
+	padding:20px 28px;
+	display:table-cell;
+}
+#left-panel {
+	background:#ff6633;
+	width:188px;
+	padding:12px 0 12px 14px;
+	display:table-cell;
+	vertical-align:top;
+}
+#left-panel .left-navigation > ul > li{ 
+    line-height: 20px;
+	padding:10px 0;
+}
+#left-panel .left-navigation > ul > li.active > a{
+	background:url(images/navigation-arrow.png) no-repeat right center;	
+}
+#left-panel .left-navigation li a{
+	display:block;
+	color:#fff;
+}
+#left-panel .left-navigation li img{
+	outline:none;
+	border:0 none;
+}
+span.icons {
+    float: left;
+    margin-right: 5px;
+    width: 25px;
+    height: 25px;
+}
+#left-panel .left-navigation li ul{
+	padding: 10px 0 0 30px;
+	display:block;
+}
+#left-panel .left-navigation li ul li{
+	padding:3px 0;
+	line-height: normal;
+}
+.dashboard-page #main-content table{
+	border:1px solid #999;
+}
+.dashboard-page #main-content table th{
+	background:#a1a1a1;
+	font-size:15px;
+	color:#fff;
+	padding:10px;
+	text-align:left;
+	border:0 none;
+	font-weight:normal;
+}
+.dashboard-page #main-content table td{
+	color:#666666;
+	padding:10px;
+	text-align:left;
+	border-left:1px solid #999;
+	border-right:1px solid #999;
+}
+.dashboard-page #main-content table tr:nth-child(even){
+	background:#e1e1e1;
+}
+.dashboard-page #main-content table td.status_active {
+	color:#369a00;
+}
+.dashboard-page #main-content table td:last-child a{
+	color:#0066cc;
+	text-decoration:underline;
+}
+.dashboard-page #main-content .table-header{
+	margin-bottom:15px;
+	float:left;
+	width:100%;
+}
+.dashboard-page #main-content .table-header .left input{
+	border: 0 none;
+    height: 15px;
+    width: 20px;
+    border-radius: 3px;
+	padding:5px;
+	text-align:center;
+}
+.dashboard-page #main-content .table-header .right input{
+	border: 0 none;
+    height: 31px;
+	line-height:31px;
+    border-radius: 15px;
+	border:1px solid #999999;
+	padding:0 10px 0 30px;
+	background:url(images/search-icon.png) no-repeat 10px center;
+	background-color:#fff;
+	width:130px;
+	
+}
+.dashboard-page #main-content .table-footer{
+	margin-top:10px;
+}
+.dashboard-page #main-content .table-footer li{
+	float:left;
+}
+.table-footer li span{
+	float:left;
+	padding:5px;
+	line-height:15px;
+}
+.table-footer .pager a{
+	color:#666;
+}
+.table-footer .pager li.pre-pager span{
+	background:url(images/pager-previous.png) no-repeat 0 50%;
+	padding-left:15px;
+
+}
+.table-footer .pager li.next-pager span{
+	background:url(images/pager-next.png) no-repeat right 50%;
+	padding-right:15px;
+}
+.table-footer .pager li.current-pager span{
+	border:1px solid #b7b7b7;
+	padding:5px;
+	float:left;
+	background:#fff;
+	text-align:center;
+}

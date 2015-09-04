@@ -5,16 +5,25 @@
 <!-- show registration form, but only if we didn't submit already -->
 <?php $data = $groups->getGroupData($groupid);  
 	if (!$groups->editgroup_successful) { ?>
-<form method="post" action="groups.php" name="groupsform">
+
+	<div class="main-content">
+	<h2>Edit Group</h2>
+	<form method="post" action="groups.php" name="groupsform">
+	<div>
     <label for="groupname">Group Name</label>
     <input id="groupname" type="text" pattern="[a-zA-Z0-9]{2,64}" name="groupname" value="<?php echo $data->groupname; ?>" required />
-
+	</div><br>
+	<div>
     <label for="description">Description</label>
     <input id="description" type="textarea" name="description" value="<?php echo $data->description?>" required />
+	</div><br>
 	<input type="hidden" name="groupid" id="groupid" value="<?php echo $groupid; ?>" />
 	<input type="hidden" name="original_groupname" id="original_groupname" value="<?php echo $data->groupname; ?>" />
+    <div>
     <input type="submit" name="editgroup" value="Update Group" />
-</form>
+    </div><br>
+	</form>
+	</div>
 <?php } ?>
 
     <a href="index.php">Back</a>

@@ -1,120 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>php-login-advanced</title>
-    <style type="text/css">
-        /* just for the demo */
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 12px;
-            margin: 10px;
-        }
-        label {
-            position: relative;
-            vertical-align: middle;
-            bottom: 1px;
-        }
-        input[type=text],
-        input[type=password],
-        input[type=submit],
-        input[type=email] {
-            display: block;
-            margin-bottom: 15px;
-        }
-        input[type=checkbox] {
-            margin-bottom: 15px;
-        }
-    </style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Indira Group of Institutes</title>
+
+<link href="libraries/css/style.css" rel="stylesheet" />
 </head>
-<body>
 
-<?php
-// show potential errors / feedback (from login object)
-if (isset($login)) {
-    if ($login->errors) {
-        foreach ($login->errors as $error) {
-            echo $error;
-        }
-    }
-    if ($login->messages) {
-        foreach ($login->messages as $message) {
-            echo $message;
-        }
-    }
-}
-?>
-
-<?php
-// show potential errors / feedback (from registration object)
-if (isset($registration)) {
-    if ($registration->errors) {
-        foreach ($registration->errors as $error) {
-            echo $error;
-        }
-    }
-    if ($registration->messages) {
-        foreach ($registration->messages as $message) {
-            echo $message;
-        }
-    }
-}
-?>
-
-<?php
-// show potential errors / feedback (from registration object)
-if (isset($groups)) {
-    if ($groups->errors) {
-        foreach ($groups->errors as $error) {
-            echo $error;
-        }
-    }
-    if ($groups->messages) {
-        foreach ($groups->messages as $message) {
-            echo $message;
-        }
-    }
-}
-?>
-
-<?php
-// show potential errors / feedback (from registration object)
-if (isset($users)) {
-    if ($users->errors) {
-        foreach ($users->errors as $error) {
-            echo $error;
-        }
-    }
-    if ($users->messages) {
-        foreach ($users->messages as $message) {
-            echo $message;
-        }
-    }
-}
-
-if (isset($Keywords)) {
-	if ($Keywords->errors) {
-		foreach ($Keywords->errors as $error) {
-			echo $error;
-		}
-	}
-	if ($Keywords->messages) {
-		foreach ($Keywords->messages as $message) {
-			echo $message;
-		}
-	}
-}
-
-if (isset($files)) {
-	if ($files->errors) {
-		foreach ($files->errors as $error) {
-			echo $error;
-		}
-	}
-	if ($files->messages) {
-		foreach ($files->messages as $message) {
-			echo $message;
-		}
-	}
-}
-?>
+<body class="dashboard-page">
+<div class="page">
+<!-- header :: start -->
+	<div class="header">
+        <div class="logo left">
+            <img src="libraries/css/images/logo.png" />
+        </div>
+        
+        <div class="user-info right">
+        	<div class="user-name left">
+            	<span>Hello!</span>
+                <span class="username"><a href="edit.php"><?php echo $_SESSION['user_fullname']?></a><br></span>
+            </div>
+            
+            <div class="user-avatar right">
+            	<img src="libraries/css/images/avatar.png" />
+            </div>
+            <a href="index.php?logout" class="log-out">Log out</a>
+        </div>
+    </div>
+<!-- header :: End -->
+	<div class="container">
+    	<div class="container-inner">
+		<?php include('_leftNav.php'); ?>

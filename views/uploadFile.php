@@ -56,21 +56,30 @@
       });
   });
   </script>
+  <div id="main-content">
+  <h2>Upload File</h2><br>
 <form method="post" action="uploadFile.php" name="uploadfileform" enctype="multipart/form-data">
+    <div>
     <label for="igifile">Upload</label>
-    <input type="file" name="igifile" /></br></br>
+    <input type="file" name="igifile" />
+    </div><br>
 	<div class="ui-widget">
     <label for="keywords">Keywords</label>
     <input id="keywords" type="text" name="keywords"  />
-	</div>
+	</div><br>
+	<div>
     <label for="caption">Caption</label>
     <input type="text" name="caption" id="caption" />
-
+	</div><br>
+	<div>
     <label for="tags">Tags</label>
     <input id="tags" type="text" name="tags"/>
+    </div><br>
+    <div>
     <input type="submit" name="uploadfile" value="Upload" />
+    </div>
 </form>
-
+</div>
 <!--  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> 
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script> 
 <script src="libraries/js/jquery.autocomplete.multiselect.js"></script> 
