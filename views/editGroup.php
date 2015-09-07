@@ -7,7 +7,7 @@
 	if (!$groups->editgroup_successful) { ?>
 
 	<div class="main-content">
-	<h2>Edit Group</h2>
+	<h2>Edit Group</h2><br>
 	<form method="post" action="groups.php" name="groupsform">
 	<div>
     <label for="groupname">Group Name</label>
@@ -25,7 +25,4 @@
 	</form>
 	</div>
 <?php } ?>
-
-    <a href="index.php">Back</a>
-
 <?php include('_footer.php'); ?>

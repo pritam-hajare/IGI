@@ -5,6 +5,8 @@
 <!-- show user form, but only if we didn't submit already -->
 <?php $data = $users->getUserData($user_id);  
 	if (!$users->edituser_successful) { ?>
+	<div class="main-content">
+	<h2>Edit Group</h2><br>
 <form method="post" action="users.php" name="usersform">
 	<label for="groupid">Groups</label>
 	<select name="groupid">
@@ -38,6 +40,7 @@
 	<input type="hidden" name="user_id" id="user_id" value="<?php echo $user_id; ?>" />
     <input type="submit" name="edituser" value="Update User" />
 </form>
+</div>
 <?php } ?>
 
     <a href="index.php">Back</a>

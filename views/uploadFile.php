@@ -58,7 +58,7 @@
   </script>
   <div id="main-content">
   <h2>Upload File</h2><br>
-<form method="post" action="uploadFile.php" name="uploadfileform" enctype="multipart/form-data">
+<form method="post" action="files.php" name="uploadfileform" enctype="multipart/form-data">
     <div>
     <label for="igifile">Upload</label>
     <input type="file" name="igifile" />
@@ -105,7 +105,4 @@ $(document).ready(function(){
 	});
 </script> -->
 <?php } ?>
-
-    <a href="index.php">Back</a>
-
 <?php include('_footer.php'); ?>

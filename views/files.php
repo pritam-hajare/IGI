@@ -9,6 +9,13 @@
 <script type="text/javascript" src="libraries/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="libraries/js/jquery.dataTables.min.js"></script>
 <link rel="stylesheet" href="libraries/css/jquery.dataTables.css"/>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <style>
+  .ui-autocomplete-loading {
+    background: white url("libraries/images/ui-anim_basic_16x16.gif") right center no-repeat;
+  }
+  </style>
 <style>
 	tfoot input {
         width: 100%;
@@ -25,8 +32,8 @@
                 <th>Keywords</th>
                 <th>Tags</th>
                 <th>Caption</th>
-                <th>Createdate</th>
-                <th>Updateddate</th>
+                <th>Create date</th>
+                <th>Updated date</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
@@ -37,8 +44,8 @@
                 <th>Keywords</th>
                 <th>Tags</th>
                 <th>Caption</th>
-                <th>Createdate</th>
-                <th>Updateddate</th>
+                <th>Created date</th>
+                <th>Updated date</th>
                 <th>Status</th>
                 <th>Action</th>
          </tr>
@@ -52,20 +59,143 @@
         		$filePath = str_replace('\\', '/', $filePath);
         	?>
             <tr>
-                <td><img src="<?php echo $filePath; ?>" alt="<?php echo $v['filename']; ?>" height="50" width="50" /><br><?php echo $v['filename']?></td>
-                <td><?php echo $v['keywords']; ?></td>
-                <td><?php echo $v['tags']; ?></td>
-                <td><?php echo $v['caption']; ?></td>
-                <td><?php echo $v['createdate'];?></td>
-                <td><?php echo $v['updatedate'];?></td>
-                <td><?php echo $v['active'] ? 'Yes' : 'No'; ?></td>
-                <td><a href="<?php echo "users.php?action=editUser&user_id=$fileid"; ?>" target="_blank" /> Edit</a></td>
+                <td iseditable="false"><img src="<?php echo $filePath; ?>" alt="<?php echo $v['filename']; ?>" height="50" width="50" /><br><?php echo $v['filename']?></td>
+                <td iseditable="true" inputname="keywords" inputtype="text"><?php echo $v['keywords']; ?></td>
+                <td iseditable="true" inputname="tags" inputtype="text"><?php echo $v['tags']; ?></td>
+                <td iseditable="true" inputname="caption" inputtype="text"><?php echo $v['caption']; ?></td>
+                <td><?php echo date('d-m-Y', strtotime($v['createdate'])); ?></td>
+                <td><?php echo !empty($v['updatedate']) ?  date('d-m-Y', strtotime($v['updatedate'])) : ''; ?></td>
+                <td iseditable="true" inputname="active" inputtype="checkbox" status="<?php echo $v['active'] ? 'checked' : ''; ?>"><?php echo $v['active'] ? 'Yes' : 'No'; ?></td>
+                <td><a class="editInline" href="javascript:void(0)" style="display: inline;" /> Edit</a><a fileid="<?php echo $fileid; ?>" class="saveInline editStakeholder" onclick="_editFiles(this);" href="javascript:void(0)" style="display: none;">Save</a></td>
             </tr>
          <?php }?>   
         </tbody>
     </table></div>
 <?php } ?>
 <script type="text/javascript">
+function editRow(row) {
+    $('td:not(:last-child)',row).each(function() {
+        if($.trim($(this).attr("isEditable")) == 'true'){
+            if($(this).attr("inputType") == 'select'){
+               // $(this).html('<select name='+$(this).attr("inputName")+' id='+$(this).attr("inputName")+'><option>'+$(this).html()+'</option></select>');
+                var option = '<option value="">Select</option>';
+                var selectedOption = $.trim($(this).html());
+                var select = $('<select name='+$(this).attr("inputName")+' id='+$(this).attr("inputName")+'><option label="--Select--" value="0">--Select--</option></select>');
+                var selectElement = $(this);
+                $.ajax({
+                    type: "POST",
+                    async: false,
+                    url: $(this).attr("selectOptions"),
+                    dataType: "json",
+                    success: function(data){
+                        /*specific condition for account dropdown*/
+                        if($.trim(selectElement.attr("inputName")) == 'accounts'){
+                            $.each(data, function(key, value){
+                                var group = $('<optgroup label="' + key + '" />');
+                                $.each(value, function(k, v){
+                                    if( selectedOption == $.trim(v)){
+                                        $('<option label="'+v+'" value="'+k+'" selected />').html(v).appendTo(group);
+                                    }else{
+                                        $('<option label="'+v+'" value="'+k+'" />').html(v).appendTo(group);
+                                    }
+                                });
+                                group.appendTo(select);
+                            });
+                            selectElement.html(select);
+                        }else{
+                            $.each(data, function(key, value) {
+                                if( selectedOption == $.trim(value)){
+                                    option = option+'<option value ='+key+' selected>'+value+'</option>';
+                                }else{
+                                    option = option+'<option value ='+key+' >'+value+'</option>';
+                                }
+                                 
+                            });
+                            selectElement.html('<select name='+selectElement.attr("inputName")+' id='+selectElement.attr("inputName")+'>'+option+'</select>');
+                        }
+                    }
+                });
+                
+            }else if($(this).attr("inputType") == 'textarea'){
+                $(this).html('<textarea name='+$(this).attr("inputName")+'  id='+$(this).attr("inputName")+'>'+ $.trim($(this).html()) + '</textarea>');
+            }else if($(this).attr("inputType") == 'checkbox'){
+                $(this).html('<input type="checkbox" name='+$(this).attr("inputName")+'  id='+$(this).attr("inputName")+' value="' + $.trim($(this).html()) + '" '+$(this).attr("status")+'/>');
+            }else{
+                $(this).html('<input type="text" name='+$(this).attr("inputName")+'  id='+$(this).attr("inputName")+' value="' + $.trim($(this).html()) + '"  class="'+$(this).attr("inputName")+'"/>');
+            }
+        }
+    });
+}
+
+function saveRow(row) {
+    row.find(".editInline").show();
+    row.find(".saveInline").hide();
+    $('td:not(:last-child)',row).each(function() {
+         if($(this).find('select').length){
+            if($(this).find('select').find(':selected').val() == 0 || $(this).find('select').find(':selected').val() == ''){
+                $(this).html('');
+            }else{
+                $(this).html($(this).find('select').find(':selected').text());
+            }
+         }else if($(this).find('textarea').length){
+            $(this).html($(this).find('textarea').val());
+         }else if($(this).find('input[type=checkbox]').length){
+            $(this).html($(this).find('input[type=checkbox]').prop("checked") == true ? 'Yes' : 'No');
+         }else{
+            $(this).html($(this).find('input').val());
+         }
+    });
+}
+
+function  _editFiles(row, type) {
+	data = {};
+    data['cache'] = 'false';
+    data['type'] = 'inline_edit_files';
+    data['fileid'] = $(row).attr('fileid');
+    $('td:not(:last-child)',$(row).closest('tr')).each(function() {
+        if($(this).find('select').length){
+            data[$(this).find('select').attr('name')] = $(this).find('select').val();
+        }else if($(this).find('input[type=text]').length){
+            data[$(this).find('input').attr('name')] = $(this).find('input').val();
+        }else if($(this).find('input[type=checkbox]').length){
+            data[$(this).find('input').attr('name')] = $(this).find('input').prop("checked") == true ? 'Yes' : 'No';
+        }
+    });
+    console.log(data);
+    /*if($.trim(type) == '3'){
+        var posturl = '/members/stakeholder/save';
+    }else{
+       var posturl = '/members/stakeholder/editsave';
+    }
+    $.post(posturl, data, function(resp){
+        if ($.trim(resp) == 'error'){
+            showAlertMessage(0, 'Something went wrong, Please try again.');
+            return false;
+        } else if ($.trim(resp) == 'invalid-email'){
+            showAlertMessage(0, 'Please enter valid email address!!!');
+            $('td:not(:last-child)',$(row).closest('tr')).each(function() {
+                if($(this).find('input').attr('name') == 'email'){
+                    $(this).find('input[name="email"]').focus();
+                }
+            });
+            return false;
+        }else if ($.trim(resp) == 'success'){
+            showAlertMessage(1, 'Stakeholder updated successfully!!!');
+            saveRow($(row).closest('tr'));
+        }
+    });*/
+
+	 saveRow($(row).closest('tr'));
+}
+
+function split( val ) {
+    return val.split( /,\s*/ );
+  }
+  
+function extractLast( term ) {
+    return split( term ).pop();
+  }
+  
 $(document).ready(function() {
     // Setup - add a text input to each footer cell
     $('#example tfoot th').each( function () {
@@ -86,7 +216,47 @@ $(document).ready(function() {
                 .draw();
         } );
     } );
+
+    $(".saveInline").hide();
+    $(".editInline").on('click', function() {
+        $(this).closest('tr').find(".editInline").hide();
+        $(this).closest('tr').find(".saveInline").show();
+        editRow($(this).closest('tr'));
+    });
 } );
+
+$(document).on('keydown.autocomplete', ".keywords", function() {
+    $(this).autocomplete({
+          source: function( request, response ) {
+            $.getJSON( "libraries/keywords.php", {
+          	  term: extractLast( request.term )
+            }, response );
+          },
+          search: function() {
+            // custom minLength
+            var term = extractLast( this.value );
+            if ( term.length < 2 ) {
+              return false;
+            }
+          },
+          focus: function() {
+            // prevent value inserted on focus
+            return false;
+          },
+          select: function( event, ui ) {
+            var terms = split( this.value );
+            // remove the current input
+            terms.pop();
+            // add the selected item
+            terms.push( ui.item.value );
+            // add placeholder to get the comma-and-space at the end
+            terms.push( "" );
+            this.value = terms.join( ", " );
+            return false;
+          }
+        });
+});
+
 </script>
 
     <a href="index.php">Back</a>
