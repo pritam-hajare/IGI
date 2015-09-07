@@ -26,9 +26,13 @@ $files = new Files();
 if (isset($_GET["action"]) && $_GET["action"] == 'uploadFile' ) {
 	// showing the user view (with the users form, and messages/errors)
 	include("views/uploadFile.php");
-}elseif(isset($_GET["action"]) && $_GET["action"] == 'editUser'){
-	$user_id = $_GET["user_id"];
-	include("views/editUser.php");
+}elseif (isset($_POST['type']) && $_POST['type'] == 'inline_edit_files') {
+	$data = $_POST;
+    if($files->uploadFileRecord($data)){
+    	exit('success');
+    }else{
+    	exit('error');
+    }
 }else{
 	include("views/files.php");
 }

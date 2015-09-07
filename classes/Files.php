@@ -169,6 +169,54 @@ class Files
         }
     }
     
+    public function uploadFileRecord($data)
+    {
+    	//echo '<pre>';
+    	//print_r($data);die();
+    	// we just remove extra space on username and email
+    	$keywords  = trim($data['keywords']);
+    	$caption = trim($data['caption']);
+    	$tags = trim($data['tags']);
+    	$user_id = $_SESSION['user_id'];
+    	$groupid = $_SESSION['groupid'];
+    	$moderator =  $_SESSION['is_moderator'];
+    	$fileid = $data['fileid'];
+    	$active = trim($data['active']) == 'Yes' ? '1' : '0';
+    	if ($this->databaseConnection()) {
+    		// write new users data into database
+    		$query_update = $this->db_connection->prepare('UPDATE igi_files 
+    														SET 
+    															user_id = :user_id,
+    															groupid = :groupid,
+    															keywords = :keywords,
+    															tags = :tags,
+    															caption = :caption,
+    															moderator = :moderator, 
+    															active = :active,
+    															updatedate = now()
+    														WHERE fileid = :fileid');
+    		$query_update->bindValue(':user_id', $user_id);
+    		$query_update->bindValue(':groupid', $groupid);
+    		$query_update->bindValue(':keywords', rtrim($keywords, ','));
+    		$query_update->bindValue(':tags', $tags);
+    		$query_update->bindValue(':caption', $caption);
+    		$query_update->bindValue(':active', $active);
+    		$query_update->bindValue(':moderator', $moderator);
+    		$query_update->bindValue(':fileid', $fileid);
+    			
+    			try {
+	    			$result = $query_update->execute();
+	    			if($result){
+	    				return true;
+	    			}else{
+	    				return false;
+	    			}
+	    		} catch (Exception $e) {
+	    			return false;
+	    		}
+    	}
+    }
+    
     public function uploadBulkFiles($data)
     {
     	//echo '<pre>';

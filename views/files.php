@@ -162,30 +162,15 @@ function  _editFiles(row, type) {
         }
     });
     console.log(data);
-    /*if($.trim(type) == '3'){
-        var posturl = '/members/stakeholder/save';
-    }else{
-       var posturl = '/members/stakeholder/editsave';
-    }
-    $.post(posturl, data, function(resp){
+    $.post('files.php', data, function(resp){
         if ($.trim(resp) == 'error'){
-            showAlertMessage(0, 'Something went wrong, Please try again.');
-            return false;
-        } else if ($.trim(resp) == 'invalid-email'){
-            showAlertMessage(0, 'Please enter valid email address!!!');
-            $('td:not(:last-child)',$(row).closest('tr')).each(function() {
-                if($(this).find('input').attr('name') == 'email'){
-                    $(this).find('input[name="email"]').focus();
-                }
-            });
+            alert('Something went wrong, Please try again.');
             return false;
         }else if ($.trim(resp) == 'success'){
-            showAlertMessage(1, 'Stakeholder updated successfully!!!');
+            alert('File updated successfully!!!');
             saveRow($(row).closest('tr'));
         }
-    });*/
-
-	 saveRow($(row).closest('tr'));
+    });
 }
 
 function split( val ) {
@@ -258,7 +243,4 @@ $(document).on('keydown.autocomplete', ".keywords", function() {
 });
 
 </script>
-
-    <a href="index.php">Back</a>
-
 <?php include('_footer.php'); ?>
