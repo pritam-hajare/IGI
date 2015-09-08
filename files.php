@@ -33,6 +33,8 @@ if (isset($_GET["action"]) && $_GET["action"] == 'uploadFile' ) {
     }else{
     	exit('error');
     }
+}elseif(isset($_GET["action"]) && $_GET["action"] == 'listFiles'){
+	include("views/filesList.php");
 }else{
 	include("views/files.php");
 }

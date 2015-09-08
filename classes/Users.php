@@ -103,6 +103,19 @@ class Users
     	}
     }
     
+    public function getGroupid($user_id)
+    {
+    	// if database connection opened
+    	if ($this->databaseConnection()) {
+    		// database query, getting all the info of the selected user
+    		$query_user = $this->db_connection->prepare('SELECT groupid FROM users WHERE user_id = :user_id');
+    		$query_user->bindValue(':user_id', $user_id, PDO::PARAM_STR);
+    		$query_user->execute();
+    		// get result row (as an object)
+    		$result = $query_user->fetchObject();
+    		return $result->groupid;
+    	} 
+    }
     /**
      * handles the entire registration process. checks all error possibilities, and creates a new user in the database if
      * everything is fine

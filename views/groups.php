@@ -40,7 +40,7 @@
                 <td><?php echo $v['groupname']; ?></td>
                 <td><?php echo $v['description']; ?></td>
                 <td><?php echo $v['createdate']; ?></td>
-                <td><a href="<?php echo "groups.php?action=editGroup&groupid=$groupid"; ?>" /> Edit</a></td>
+                <td><a href="<?php echo "groups.php?action=editGroup&groupid=$groupid"; ?>"> Edit</a></td>
             </tr>
          <?php }?>   
         </tbody>

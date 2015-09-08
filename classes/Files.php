@@ -1,5 +1,5 @@
 <?php
-
+require_once('classes/Users.php');
 /**
  * Handles the user operations
  */
@@ -225,14 +225,17 @@ class Files
     	$user_id = $data['user_id'];
     	$user_name = $data['user_name'];
     	$filename = $data['filename'];
-    	$filepath = $data['filepath'];;
+    	$filepath = $data['filepath'];
+    	$users = new Users();
+    	$groupid = $users->getGroupid($user_id);
     	
     	if ($this->databaseConnection()) {
     		// write new users data into database
-    		$query_insert = $this->db_connection->prepare('INSERT INTO igi_files (filename, filepath, user_id, active, createdate) VALUES (:filename, :filepath, :userid, :active,  now())');
+    		$query_insert = $this->db_connection->prepare('INSERT INTO igi_files (filename, filepath, user_id, groupid, active, createdate) VALUES (:filename, :filepath, :userid, :groupid, :active,  now())');
     		$query_insert->bindValue(':filename', $filename);
     		$query_insert->bindValue(':filepath', 'upload/'.$_SESSION['user_name'].'_'.$_SESSION['user_id']);
     		$query_insert->bindValue(':userid', $user_id);
+    		$query_insert->bindValue(':groupid', $groupid);
     		$query_insert->bindValue(':active', '1');
     		try{
     			$query_insert->execute();

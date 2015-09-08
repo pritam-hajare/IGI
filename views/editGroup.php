@@ -6,7 +6,7 @@
 <?php $data = $groups->getGroupData($groupid);  
 	if (!$groups->editgroup_successful) { ?>
 
-	<div class="main-content">
+	<div id="main-content">
 	<h2>Edit Group</h2><br>
 	<form method="post" action="groups.php" name="groupsform">
 	<div>
@@ -15,7 +15,7 @@
 	</div><br>
 	<div>
     <label for="description">Description</label>
-    <input id="description" type="textarea" name="description" value="<?php echo $data->description?>" required />
+    <textarea id="description" name="description" required ><?php echo $data->description?></textarea>
 	</div><br>
 	<input type="hidden" name="groupid" id="groupid" value="<?php echo $groupid; ?>" />
 	<input type="hidden" name="original_groupname" id="original_groupname" value="<?php echo $data->groupname; ?>" />
