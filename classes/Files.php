@@ -95,6 +95,21 @@ class Files
     	}
     }
     
+    public function getFileData($fileid)
+    {
+    	// if database connection opened
+    	if ($this->databaseConnection()) {
+    		// database query, getting all the info of the selected user
+    		$query_file = $this->db_connection->prepare('SELECT * FROM igi_files WHERE fileid = :fileid');
+    		$query_file->bindValue(':fileid', $fileid);
+    		$query_file->execute();
+    		// get result row (as an object)
+    		return $query_file->fetchObject();
+    	} else {
+    		return false;
+    	}
+    }
+    
     /**
      * handles the entire registration process. checks all error possibilities, and creates a new user in the database if
      * everything is fine

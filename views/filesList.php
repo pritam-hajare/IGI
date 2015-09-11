@@ -39,7 +39,7 @@
         		$filePath = str_replace('\\', '/', $filePath);
         	?>
             <tr>
-                <td iseditable="false"><img src="<?php echo $filePath; ?>" alt="<?php echo $v['filename']; ?>" height="50" width="50" /><br><?php echo $v['filename']?></td>
+                <td iseditable="false"><a href="download.php?fileid=<?php echo $fileid ;?>" ><img src="<?php echo $filePath; ?>" alt="<?php echo $v['filename']; ?>" height="50" width="50" /></a><br><?php echo $v['filename']?></td>
                 <td iseditable="true" inputname="keywords" inputtype="text"><?php echo $v['keywords']; ?></td>
                 <td iseditable="true" inputname="tags" inputtype="text"><?php echo $v['tags']; ?></td>
                 <td iseditable="true" inputname="caption" inputtype="text"><?php echo $v['caption']; ?></td>
