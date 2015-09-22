@@ -15,8 +15,8 @@
  */
 define("DB_HOST", "localhost");
 define("DB_NAME", "igi");
-define("DB_USER", "root");
-define("DB_PASS", "");
+define("DB_USER", "igi_user");
+define("DB_PASS", "QWEqwe123!@#");
 
 /**
  * Configuration for: Cookies

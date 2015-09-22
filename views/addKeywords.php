@@ -5,7 +5,7 @@
 <!-- show registration form, but only if we didn't submit already -->
 <?php if (!$Keywords->addkeywords_successful) { ?>
 <div id="main-content">
-<form method="post" action="Keywords.php" name="groupsform">
+<form method="post" action="keywords.php" name="groupsform">
 	<h2>Add Keywords</h2><br>
 	<div>
     <label for="keyword">Keyword</label>

@@ -7,7 +7,7 @@
 	if (!$Keywords->editkeywords_successful) { ?>
 	<div id="main-content">
 	<h2>Edit Keyword</h2><br>
-<form method="post" action="Keywords.php" name="groupsform">
+<form method="post" action="keywords.php" name="groupsform">
     <div>
     <label for="keyword">Keyword</label>
     <input id="keyword" type="text" pattern="[a-zA-Z0-9]{2,64}" name="keyword" value="<?php echo $data->keywords; ?>" required />
