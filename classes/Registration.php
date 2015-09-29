@@ -176,7 +176,7 @@ class Registration
     public function sendVerificationEmail($user_id, $user_email, $user_activation_hash)
     {
     	// no need of verification.
-    	return true;
+    	//return true;
         $mail = new PHPMailer;
 
         // please look into the config/config.php for much more info on how to use this!

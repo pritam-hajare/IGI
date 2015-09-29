@@ -166,6 +166,48 @@ class Keywords
     	}
     }
     
+    public function importKeyword($keyword)
+    {
+    	// we just remove extra space on username and email
+    	$keyword  = trim($keyword);
+    
+    	// check provided data validity
+    	// TODO: check for "return true" case early, so put this first
+    	if (empty($keyword)) {
+    		return 'Keyword Empty.';
+    		// finally if all the above checks are ok
+    	} else if ($this->databaseConnection()) {
+    		// check if group  already exists
+    		$query_check_keyword = $this->db_connection->prepare('SELECT keywords FROM igi_keywords WHERE keywords=:keyword');
+    		$query_check_keyword->bindValue(':keyword', $keyword, PDO::PARAM_STR);
+    		$query_check_keyword->execute();
+    		$result = $query_check_keyword->fetchAll();
+    
+    		// if username or/and email find in the database
+    		// TODO: this is really awful!
+    		if (count($result) > 0) {
+    			for ($i = 0; $i < count($result); $i++) {
+    				return 'Keyword already exists';
+    			}
+    		} else {
+    
+    			// write new users data into database
+    			$query_new_group_insert = $this->db_connection->prepare('INSERT INTO igi_keywords (keywords, createdate) VALUES(:keyword,now())');
+    			$query_new_group_insert->bindValue(':keyword', $keyword, PDO::PARAM_STR);
+    			$query_new_group_insert->execute();
+    
+    			// id of group user
+    			$keyid = $this->db_connection->lastInsertId();
+    
+    			if ($keyid) {
+    				return 'Keyword Added successfully';
+    			} else {
+    				return 'Failed to add Keyword';
+    			}
+    		}
+    	}
+    }
+    
     public function getKeywords()
     {
     // if database connection opened
