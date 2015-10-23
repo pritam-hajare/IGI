@@ -22,7 +22,7 @@ require_once('classes/Files.php');
 
 // so this single line handles the entire users process.
 $files = new Files();
-
+$active = 'files';
 if (isset($_GET["action"]) && $_GET["action"] == 'uploadFile' ) {
 	// showing the user view (with the users form, and messages/errors)
 	include("views/uploadFile.php");

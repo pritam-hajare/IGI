@@ -54,6 +54,42 @@
           return false;
         }
       });
+
+    $("#year").keypress(function (e) {
+        //if the letter is not digit then display error and don't type anything
+        if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+           //display error message
+           $("#errmsg").html("Digits Only").show().fadeOut("slow");
+                  return false;
+       }
+      });
+
+    $("#day").keypress(function (e) {
+        //if the letter is not digit then display error and don't type anything
+        if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+           //display error message
+           $("#errmsg").html("Digits Only").show().fadeOut("slow");
+                  return false;
+       }
+    });
+
+    var availableTags = [
+                         "January",
+                         "February",
+                         "March",
+                         "April",
+                         "May",
+                         "June",
+                         "July",
+                         "August",
+                         "September",
+                         "October",
+                         "November",
+                         "Dec"
+                       ];
+                       $( "#month" ).autocomplete({
+                         source: availableTags
+                       });
   });
   </script>
   <div id="main-content">
@@ -74,6 +110,18 @@
 	<div>
     <label for="tags">Tags</label>
     <input id="tags" type="text" name="tags"/>
+    </div><br>
+    <div>
+    <label for="year">Year</label>
+    <input id="year" type="text" name="year"/>
+    </div><br>
+    <div>
+    <label for="month">Month</label>
+    <input id="month" type="text" name="month"/>
+    </div><br>
+    <div>
+    <label for="day">Day</label>
+    <input id="day" type="text" name="day"/>
     </div><br>
     <div>
     <input type="submit" name="uploadfile" value="Upload" />

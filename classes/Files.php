@@ -122,6 +122,9 @@ class Files
         $keywords  = trim($data['keywords']);
         $caption = trim($data['caption']);
         $tags = trim($data['tags']);
+        $year = trim($data['year']);
+        $month = trim($data['month']);
+        $day = trim($data['day']);
         $user_id = $_SESSION['user_id'];
         $groupid = $_SESSION['groupid'];
         $moderator =  $_SESSION['is_moderator'];
@@ -130,7 +133,7 @@ class Files
 
 		if ($this->databaseConnection()) {
                 // write new users data into database
-                $query_insert = $this->db_connection->prepare('INSERT INTO igi_files (filename, filepath, user_id, groupid, keywords, tags, caption, active, moderator, createdate) VALUES (:filename, :filepath, :userid, :groupid, :keywords,  :tags, :caption, :active, :moderator,  now())');
+                $query_insert = $this->db_connection->prepare('INSERT INTO igi_files (filename, filepath, user_id, groupid, keywords, tags, caption, year, month, day, active, moderator, createdate) VALUES (:filename, :filepath, :userid, :groupid, :keywords,  :tags, :caption, :year, :month, :day, :active, :moderator,  now())');
                 $query_insert->bindValue(':filename', $filename);
                 $query_insert->bindValue(':filepath', 'upload/'.$_SESSION['user_name'].'_'.$_SESSION['user_id']);
                 $query_insert->bindValue(':userid', $user_id);
@@ -138,6 +141,9 @@ class Files
                 $query_insert->bindValue(':keywords', rtrim($keywords, ','));
                 $query_insert->bindValue(':tags', $tags);
                 $query_insert->bindValue(':caption', $caption);
+                $query_insert->bindValue(':year', $year);
+                $query_insert->bindValue(':month', $month);
+                $query_insert->bindValue(':day', $day);
                 $query_insert->bindValue(':active', '1');
                 $query_insert->bindValue(':moderator', $moderator);
                 try{
@@ -192,6 +198,9 @@ class Files
     	$keywords  = trim($data['keywords']);
     	$caption = trim($data['caption']);
     	$tags = trim($data['tags']);
+    	$year = trim($data['year']);
+    	$month = trim($data['month']);
+    	$day = trim($data['day']);
     	$user_id = $_SESSION['user_id'];
     	$groupid = $_SESSION['groupid'];
     	$moderator =  $_SESSION['is_moderator'];
@@ -206,6 +215,9 @@ class Files
     															keywords = :keywords,
     															tags = :tags,
     															caption = :caption,
+    															year = :year,
+    															month = :month,
+    															day = :day,
     															moderator = :moderator, 
     															active = :active,
     															updatedate = now()
@@ -215,6 +227,9 @@ class Files
     		$query_update->bindValue(':keywords', rtrim($keywords, ','));
     		$query_update->bindValue(':tags', $tags);
     		$query_update->bindValue(':caption', $caption);
+    		$query_update->bindValue(':year', $year);
+    		$query_update->bindValue(':month', $month);
+    		$query_update->bindValue(':day', $day);
     		$query_update->bindValue(':active', $active);
     		$query_update->bindValue(':moderator', $moderator);
     		$query_update->bindValue(':fileid', $fileid);

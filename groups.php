@@ -23,7 +23,7 @@ require_once('classes/Groups.php');
 // create the registration object. when this object is created, it will do all registration stuff automatically
 // so this single line handles the entire registration process.
 $groups = new Groups();
-
+$active = 'manage_groups';
 if (isset($_GET["action"]) && $_GET["action"] == 'addGroup' ) {
 	// showing the user view (with the users form, and messages/errors)
 	include("views/addGroup.php");

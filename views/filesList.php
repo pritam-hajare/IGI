@@ -12,8 +12,11 @@
                 <th>Keywords</th>
                 <th>Tags</th>
                 <th>Caption</th>
-                <th>Create date</th>
-                <th>Updated date</th>
+                <th>Year</th>
+                <th>Month</th>
+                <th>Day</th>
+                <!-- <th>Create date</th>
+                <th>Updated date</th> -->
                 <th>Status</th>
                 <th>Action</th>
             </tr>
@@ -24,8 +27,11 @@
                 <th>Keywords</th>
                 <th>Tags</th>
                 <th>Caption</th>
-                <th>Created date</th>
-                <th>Updated date</th>
+                <th>Year</th>
+                <th>Month</th>
+                <th>Day</th>
+                 <!-- <th>Created date</th>
+                <th>Updated date</th> -->
                 <th>Status</th>
                 <th>Action</th>
          </tr>
@@ -43,8 +49,11 @@
                 <td iseditable="true" inputname="keywords" inputtype="text"><?php echo $v['keywords']; ?></td>
                 <td iseditable="true" inputname="tags" inputtype="text"><?php echo $v['tags']; ?></td>
                 <td iseditable="true" inputname="caption" inputtype="text"><?php echo $v['caption']; ?></td>
-                <td><?php echo date('d-m-Y', strtotime($v['createdate'])); ?></td>
-                <td><?php echo !empty($v['updatedate']) ?  date('d-m-Y', strtotime($v['updatedate'])) : ''; ?></td>
+                <td iseditable="true" inputname="year" inputtype="text"><?php echo $v['year']; ?></td>
+                <td iseditable="true" inputname="month" inputtype="text"><?php echo $v['month']; ?></td>
+                <td iseditable="true" inputname="day" inputtype="text"><?php echo $v['day']; ?></td>
+                <!-- <td><?php echo date('d-m-Y', strtotime($v['createdate'])); ?></td>
+                <td><?php echo !empty($v['updatedate']) ?  date('d-m-Y', strtotime($v['updatedate'])) : ''; ?></td> -->
                 <td iseditable="true" inputname="active" inputtype="checkbox" status="<?php echo $v['active'] ? 'checked' : ''; ?>"><?php echo $v['active'] ? 'Yes' : 'No'; ?></td>
                 <td><a class="editInline" href="javascript:void(0)" style="display: inline;" > Edit</a><a fileid="<?php echo $fileid; ?>" class="saveInline editStakeholder" onclick="_editFiles(this);" href="javascript:void(0)" style="display: none;">Save</a></td>
             </tr>
@@ -101,7 +110,7 @@ function editRow(row) {
             }else if($(this).attr("inputType") == 'checkbox'){
                 $(this).html('<input type="checkbox" name='+$(this).attr("inputName")+'  id='+$(this).attr("inputName")+' value="' + $.trim($(this).html()) + '" '+$(this).attr("status")+'/>');
             }else{
-                $(this).html('<input type="text" name='+$(this).attr("inputName")+'  id='+$(this).attr("inputName")+' value="' + $.trim($(this).html()) + '"  class="'+$(this).attr("inputName")+'"/>');
+                $(this).html('<input type="text" size="10" name='+$(this).attr("inputName")+'  id='+$(this).attr("inputName")+' value="' + $.trim($(this).html()) + '"  class="'+$(this).attr("inputName")+'"/>');
             }
         }
     });
@@ -166,7 +175,12 @@ $(document).ready(function() {
     // Setup - add a text input to each footer cell
     $('#example tfoot th').each( function () {
         var title = $('#example thead th').eq( $(this).index() ).text();
-        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+        $(this).html( '<input type="text" size="10" placeholder="Search '+title+'" />' );
+    } );
+
+    $('#example thead th').each( function () {
+        var title = $('#example thead th').eq( $(this).index() ).text();
+        $(this).html( title+'<br><input type="text" size="10" placeholder="Search '+title+'" />' );
     } );
  
     // DataTable
@@ -177,6 +191,12 @@ $(document).ready(function() {
         var that = this;
  
         $( 'input', this.footer() ).on( 'keyup change', function () {
+            that
+                .search( this.value )
+                .draw();
+        } );
+
+        $( 'input', this.header() ).on( 'keyup change', function () {
             that
                 .search( this.value )
                 .draw();
@@ -222,5 +242,23 @@ $(document).on('keydown.autocomplete', ".keywords", function() {
           }
         });
 });
-
+var availableTags = [
+                     "January",
+                     "February",
+                     "March",
+                     "April",
+                     "May",
+                     "June",
+                     "July",
+                     "August",
+                     "September",
+                     "October",
+                     "November",
+                     "Dec"
+                   ];
+$(document).on('keydown.autocomplete', ".month", function() {
+    $(this).autocomplete({
+          source: availableTags
+        });
+});
 </script>

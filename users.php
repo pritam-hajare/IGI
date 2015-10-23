@@ -22,6 +22,7 @@ require_once('classes/Users.php');
 
 // so this single line handles the entire users process.
 $users = new Users();
+$active = 'users';
 //echo '<pre>'; print_r($_POST); die();
 if (isset($_GET["action"]) && $_GET["action"] == 'adduser' ) {
 	// showing the user view (with the users form, and messages/errors)

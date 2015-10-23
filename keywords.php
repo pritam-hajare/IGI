@@ -23,7 +23,7 @@ require_once('classes/Keywords.php');
 // create the registration object. when this object is created, it will do all registration stuff automatically
 // so this single line handles the entire registration process.
 $Keywords = new Keywords();
-
+$active = 'keywords';
 // showing the register view (with the registration form, and messages/errors)
 
 if (isset($_GET["action"]) && $_GET["action"] == 'addKeywords' ) {
