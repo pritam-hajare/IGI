@@ -9,7 +9,9 @@
             <div class="main-content">
             	<div>
             	<p>
-                	Indira College of Engineering and Management, established in 2007, is a venture of SCES. The institute is approved by All India Council of Technical Education (AICTE), New Delhi and Govt. of Maharashtra and affiliated to the University of Pune. The post globalization era in India has resulted in fast pace development activities, shaping mighty economic developments.
+            		<span>
+                	Welcome to Archival and Retrieval System of Indira Group of Institutes. Here, a simple and an advance search, based on Keywords and Tags may lead you to a desired visual content. To archive new photographs or any visual content, please follow norms set for the system. Systematically archived visual content is the key to the success of this system.
+                	</span>
                 </p>
                 </div>
             </div>

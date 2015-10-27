@@ -17,7 +17,7 @@
             
             <div class="main-content">
             	<p>
-                	Indira College of Engineering and Management, established in 2007, is a venture of SCES. The institute is approved by All India Council of Technical Education (AICTE), New Delhi and Govt. of Maharashtra and affiliated to the University of Pune. The post globalization era in India has resulted in fast pace development activities, shaping mighty economic developments.
+                	Shree Chanakya Education Society (SCES), Pune, was established in 1994, with the explicit vision to provide sustainable impetus to the corporate and entrepreneurial abilities in the youth. The visionary, Dr. Tarita Shankar, Chairperson, Indira Group, integrated her pursuit of excellence and articulated educational institutions, known as Indira Group of Institutes (IGI), which imbibe human excellence and demonstrate strong social values, with a single minded pursuit of developing the youth to become business leaders.
                 </p>
             </div>
         </div>
@@ -38,7 +38,7 @@
                 </div>
                 
                 <div class="controls">
-                	<a href="password_reset.php" class="forget-password">Forget password ?</a>
+                	<a href="password_reset.php" class="forget-password">Forgot password?</a>
                     <input type="submit" name="login" value="Sign in" class="sign-in-btn"/>
                 </div>
                 
