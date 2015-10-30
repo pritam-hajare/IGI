@@ -11,10 +11,13 @@
 <div id="left-panel">
         	<div class="left-navigation">
             	<ul>
-                	<li <?php if (isset($active) && $active == 'manage_groups') { ?> class="active" <?php } else { ?> class="" <?php } ?> ><a href="#"><span class="icons"><img src="libraries/css/images/institute-icon.png"/></span>Manage Groups <span class="expand-menu">+</span></a>
+            		<li <?php if (isset($active) && $active == 'home') { ?> class="active" <?php } else { ?> class="" <?php } ?> ><a href="index.php"><span class="icons"><img src="libraries/css/images/institute-icon.png"/></span>Home </a>
+            			
+            		</li>
+                	<li <?php if (isset($active) && $active == 'manage_groups') { ?> class="active" <?php } else { ?> class="" <?php } ?> ><a href="#"><span class="icons"><img src="libraries/css/images/institute-icon.png"/></span>Manage Functions <span class="expand-menu">+</span></a>
                     	<ul>
-                        	<li><a href="groups.php">Groups</a></li>
-                            <li><a href="groups.php?action=addGroup">Add Group</a></li>
+                        	<li><a href="groups.php">Functions</a></li>
+                            <li><a href="groups.php?action=addGroup">Add Function</a></li>
                         </ul>
                     </li>
                     <li <?php if (isset($active) && $active == 'users') { ?> class="active" <?php } else { ?> class="" <?php } ?> ><a href="#"><span class="icons"><img src="libraries/css/images/user-icon.png"/></span>Manage Users <span class="expand-menu">+</span></a>

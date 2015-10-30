@@ -36,7 +36,9 @@ class Users
      */
     public function __construct()
     {
-        session_start();
+    	if (session_status() == PHP_SESSION_NONE) {
+    		session_start();
+		}
         // if we have such a POST request, call the registerNewUser() method
      	if (isset($_POST["addusers"])) {
             $this->addNewUser($_POST);

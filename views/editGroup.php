@@ -7,10 +7,10 @@
 	if (!$groups->editgroup_successful) { ?>
 
 	<div id="main-content">
-	<h2>Edit Group</h2><br>
+	<h2>Edit Function</h2><br>
 	<form method="post" action="groups.php" name="groupsform">
 	<div>
-    <label for="groupname">Group Name</label>
+    <label for="groupname">Function Name</label>
     <input id="groupname" type="text" pattern="[a-zA-Z0-9]{2,64}" name="groupname" value="<?php echo $data->groupname; ?>" required />
 	</div><br>
 	<div>
@@ -20,7 +20,7 @@
 	<input type="hidden" name="groupid" id="groupid" value="<?php echo $groupid; ?>" />
 	<input type="hidden" name="original_groupname" id="original_groupname" value="<?php echo $data->groupname; ?>" />
     <div>
-    <input type="submit" name="editgroup" value="Update Group" />
+    <input type="submit" name="editgroup" value="Update Function" />
     </div><br>
 	</form>
 	</div>

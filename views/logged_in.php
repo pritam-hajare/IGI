@@ -6,14 +6,11 @@
 //echo WORDING_PROFILE_PICTURE . '<br/><img src="' . $login->user_gravatar_image_url . '" />;
 //echo WORDING_PROFILE_PICTURE . '<br/>' . $login->user_gravatar_image_tag;
 ?>
-            <div class="main-content">
-            	<div>
+            <div id="main-content">
+            	<h2>Indira Group Of Institutes</h2><br>
             	<p>
-            		<span>
                 	Welcome to Archival and Retrieval System of Indira Group of Institutes. Here, a simple and an advance search, based on Keywords and Tags may lead you to a desired visual content. To archive new photographs or any visual content, please follow norms set for the system. Systematically archived visual content is the key to the success of this system.
-                	</span>
                 </p>
-                </div>
             </div>
 
 <!--div>

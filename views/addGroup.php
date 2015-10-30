@@ -6,9 +6,9 @@
 <?php if (!$groups->addgroup_successful) { ?>
 <div id="main-content">
 <form method="post" action="groups.php" name="groupsform">
-	<h2>Add Group</h2><br>
+	<h2>Add Function</h2><br>
 	<div>
-    <label for="groupname">Group Name</label>
+    <label for="groupname">Function Name</label>
     <input id="groupname" type="text" pattern="[a-zA-Z0-9]{2,64}" name="groupname" required />
 	</div><br>
 	<div>
@@ -16,7 +16,7 @@
     <input id="description" type="textarea" name="description" required />
 	</div><br>
 	<div>
-    <input type="submit" name="addgroup" value="Add Groups" />
+    <input type="submit" name="addgroup" value="Add Function" />
     </div>
 </form>
 </div>

@@ -41,8 +41,10 @@
         		$fileid = $v['fileid']; 
         		$date = date_create($v['createdate']);
         		$fileDate = date_format($date, 'd-m-Y');
-        		$filePath = '\\'.$v['filepath'].'\\'.$fileDate.'\\'.$fileid.'_'.$v['filename'];
-        		$filePath = str_replace('/', '\\', $filePath);
+        		//$filePath = '\\'.$v['filepath'].'\\'.$fileDate.'\\'.$fileid.'_'.$v['filename'];
+        		//$filePath = str_replace('/', '\\', $filePath);
+				$filePath = '/'.$v['filepath'].'/'.$fileDate.'/'.$fileid.'_'.$v['filename'];
+				$filePath = str_replace('\\', '/', $filePath);
         	?>
             <tr>
                 <td iseditable="false"><a href="download.php?fileid=<?php echo $fileid ;?>" ><img src="thumb.php?src=<?php echo $filePath; ?>" alt="<?php echo $v['filename']; ?>" height="50" width="50" /></a><br><?php echo $v['filename']?></td>

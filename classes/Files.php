@@ -28,13 +28,18 @@ class Files
      */
     public function __construct()
     {
-        session_start();
+    	if (session_status() == PHP_SESSION_NONE) {
+    		session_start();
+		}
+
         // if we have such a POST request, call the registerNewUser() method
      	if (isset($_POST["uploadfile"])) {
      		$file = $_FILES['igifile'];
      		$data = $_POST;
      		//echo '<pre>'; print_r($_SESSION); print_r($file); print_r($data);var_dump(date("d-m-Y"), date("h", time()),  strtotime("now")); die();
             $this->uploadFile($data, $file);
+        }else if(isset($_POST["bulkupload"])){
+        	$this->getDirContaints();
         }
     }
 
@@ -244,6 +249,23 @@ class Files
 	    		} catch (Exception $e) {
 	    			return false;
 	    		}
+    	}
+    }
+    
+    function getDirContaints(){
+    	$dir = $filepath = getcwd().'/upload/'.$_SESSION['user_name'].'_'.$_SESSION['user_id'];
+    	$allfiles = scandir($dir);
+    	foreach($allfiles as $key => $value){
+    		if(!in_array($value,array(".",".."))){
+    			$path = realpath($dir . DIRECTORY_SEPARATOR . $value);
+    			if(!is_dir($path)){
+    				$data['filename'] = basename($path);
+    				$data['filepath'] = $dir;
+    				$data['user_id'] = $_SESSION['user_id'];
+    				$data['user_name'] = $_SESSION['user_name'];
+    				$this->uploadBulkFiles($data);
+    			}
+    		}
     	}
     }
     

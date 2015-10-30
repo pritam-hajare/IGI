@@ -16,11 +16,11 @@
     }
 </style>
 <div id="main-content">
-<h2>Groups</h2><br>
+<h2>Functions</h2><br>
 <table id="example" width="100%" border="0" cellspacing="5" cellpadding="5" style="border-collapse:collapse">
         <thead>
             <tr>
-                <th scope="col">Group Name</th>
+                <th scope="col">Function Name</th>
                 <th scope="col">Description</th>
                 <th scope="col">Created Date</th>
                 <th scope="col">Action</th>
@@ -28,7 +28,7 @@
         </thead>
  		<tfoot>
         <tr>
-                <th scope="col">Group Name</th>
+                <th scope="col">Function Name</th>
                 <th scope="col">Description</th>
                 <th scope="col">Created Date</th>
                 <th scope="col">Action</th>

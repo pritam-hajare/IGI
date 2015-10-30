@@ -124,7 +124,7 @@
     <input id="day" type="text" name="day"/>
     </div><br>
     <div>
-    <input type="submit" name="uploadfile" value="Upload" />
+    <input type="submit" name="uploadfile" value="Upload" />&nbsp;&nbsp;<input type="submit" name="bulkupload" value="Bulk Upload" />
     </div>
 </form>
 </div>

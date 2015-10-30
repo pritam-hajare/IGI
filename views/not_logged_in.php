@@ -38,7 +38,7 @@
                 </div>
                 
                 <div class="controls">
-                	<a href="password_reset.php" class="forget-password">Forgot password?</a>
+                <!--  	<a href="password_reset.php" class="forget-password">Forgot password?</a> -->
                     <input type="submit" name="login" value="Sign in" class="sign-in-btn"/>
                 </div>
                 
@@ -47,7 +47,7 @@
                     <label for="remember-me-checkbox">Keep me logged in for 2 weeks</label>
                 </div>
                 </form>
-                <a href="register.php" class="user-register-link">Register new account </a>
+                <!--  <a href="register.php" class="user-register-link">Register new account </a> -->
             </div>
         
         </div>

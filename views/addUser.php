@@ -8,7 +8,7 @@
 <h2>Add user</h2><br>
 <form method="post" action="users.php" name="usersform">
 	<div>
-	<label for="groupid">Groups</label>
+	<label for="groupid">Function</label>
 	<select name="groupid">
   		<?php echo implode("\n", $users->getGroups()); ?>
 	</select>
