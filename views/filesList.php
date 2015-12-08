@@ -47,7 +47,7 @@
 				$filePath = str_replace('\\', '/', $filePath);
         	?>
             <tr>
-                <td iseditable="false"><a href="download.php?fileid=<?php echo $fileid ;?>" ><img src="thumb.php?src=<?php echo $filePath; ?>" alt="<?php echo $v['filename']; ?>" height="50" width="50" /></a><br><?php echo $v['filename']?></td>
+                <td iseditable="false"><a href="download.php?fileid=<?php echo $fileid ;?>" ><img src="thumb.php?src=<?php echo $filePath; ?>" alt="<?php echo $v['filename']; ?>" height="100" width="100" /></a><!-- <br><?php echo $v['filename']?> --></td>
                 <td iseditable="true" inputname="keywords" inputtype="text"><?php echo $v['keywords']; ?></td>
                 <td iseditable="true" inputname="tags" inputtype="text"><?php echo $v['tags']; ?></td>
                 <td iseditable="true" inputname="caption" inputtype="text"><?php echo $v['caption']; ?></td>
@@ -262,5 +262,14 @@ $(document).on('keydown.autocomplete', ".month", function() {
     $(this).autocomplete({
           source: availableTags
         });
+});
+
+$('#example').on('draw.dt', function() {
+	 $(".saveInline").hide();
+	 $(".editInline").on('click', function() {
+	     $(this).closest('tr').find(".editInline").hide();
+	     $(this).closest('tr').find(".saveInline").show();
+	     editRow($(this).closest('tr'));
+	 });
 });
 </script>
