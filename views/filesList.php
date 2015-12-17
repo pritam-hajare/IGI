@@ -1,10 +1,7 @@
 <?php if(!( $_SESSION['is_admin'] ||  $_SESSION['is_moderator'])){
 	echo 'You are not authorised to access this page.';exit;
 }?>
-<?php $allFiles = $files->getFiles();
-//echo '<pre>'; print_r($allFiles); die();
-	if (!empty($allFiles)) { 
-?>
+
 <table id="example" width="100%" border="0" cellspacing="5" cellpadding="5" style="border-collapse:collapse">
         <thead>
             <tr>
@@ -37,6 +34,9 @@
          </tr>
  		</tfoot>
         <tbody>
+        <?php $allFiles = $files->getFiles();
+			if (!empty($allFiles)) { 
+		?>
         <?php foreach ($allFiles as $K=>$v){
         		$fileid = $v['fileid']; 
         		$date = date_create($v['createdate']);
@@ -47,7 +47,7 @@
 				$filePath = str_replace('\\', '/', $filePath);
         	?>
             <tr>
-                <td iseditable="false"><a href="download.php?fileid=<?php echo $fileid ;?>" ><img src="thumb.php?src=<?php echo $filePath; ?>" alt="<?php echo $v['filename']; ?>" height="100" width="100" /></a><!-- <br><?php echo $v['filename']?> --></td>
+                <td iseditable="false"><a href="download.php?fileid=<?php echo $fileid ;?>"  class='imagefile' fileid='<?php echo $fileid ;?>' filePath='<?php echo $filePath ;?>' filename='<?php echo $v['filename']; ?>'><img src="libraries/images/ui-anim_basic_16x16.gif"></a></td>
                 <td iseditable="true" inputname="keywords" inputtype="text"><?php echo $v['keywords']; ?></td>
                 <td iseditable="true" inputname="tags" inputtype="text"><?php echo $v['tags']; ?></td>
                 <td iseditable="true" inputname="caption" inputtype="text"><?php echo $v['caption']; ?></td>
@@ -59,10 +59,11 @@
                 <td iseditable="true" inputname="active" inputtype="checkbox" status="<?php echo $v['active'] ? 'checked' : ''; ?>"><?php echo $v['active'] ? 'Yes' : 'No'; ?></td>
                 <td><a class="editInline" href="javascript:void(0)" style="display: inline;" > Edit</a><a fileid="<?php echo $fileid; ?>" class="saveInline editStakeholder" onclick="_editFiles(this);" href="javascript:void(0)" style="display: none;">Save</a></td>
             </tr>
-         <?php }?>   
+         <?php }?> 
+         <?php }?>  
         </tbody>
     </table>
-<?php } ?>
+
 <script type="text/javascript">
 function editRow(row) {
     $('td:not(:last-child)',row).each(function() {
@@ -112,7 +113,7 @@ function editRow(row) {
             }else if($(this).attr("inputType") == 'checkbox'){
                 $(this).html('<input type="checkbox" name='+$(this).attr("inputName")+'  id='+$(this).attr("inputName")+' value="' + $.trim($(this).html()) + '" '+$(this).attr("status")+'/>');
             }else{
-                $(this).html('<input type="text" size="10" name='+$(this).attr("inputName")+'  id='+$(this).attr("inputName")+' value="' + $.trim($(this).html()) + '"  class="'+$(this).attr("inputName")+'"/>');
+                $(this).html('<input type="text" size="10" name='+$(this).attr("inputName")+'  id='+$(this).attr("inputName")+' value="' + $.trim($(this).html()) + '"  class="'+$(this).attr("inputName")+'" />');
             }
         }
     });
@@ -159,7 +160,7 @@ function  _editFiles(row, type) {
             return false;
         }else if ($.trim(resp) == 'success'){
             alert('File updated successfully!!!');
-            $('#allFiles').load('files.php?action=listFiles');
+            //$('#allFiles').load('files.php?action=listFiles');
             saveRow($(row).closest('tr'));
         }
     });
@@ -205,12 +206,12 @@ $(document).ready(function() {
         } );
     } );
 
-    $(".saveInline").hide();
-    $(".editInline").on('click', function() {
+    //$(".saveInline").hide();
+    /*$(".editInline").on('click', function() {
         $(this).closest('tr').find(".editInline").hide();
         $(this).closest('tr').find(".saveInline").show();
         editRow($(this).closest('tr'));
-    });
+    });*/
 } );
 
 $(document).on('keydown.autocomplete', ".keywords", function() {
@@ -265,11 +266,21 @@ $(document).on('keydown.autocomplete', ".month", function() {
 });
 
 $('#example').on('draw.dt', function() {
-	 $(".saveInline").hide();
-	 $(".editInline").on('click', function() {
+	 //$(".saveInline").hide();
+	 $(".editInline").off('click').on('click', function() {
 	     $(this).closest('tr').find(".editInline").hide();
 	     $(this).closest('tr').find(".saveInline").show();
 	     editRow($(this).closest('tr'));
+	 });
+	 
+	 $(".imagefile").each(function(){
+	     var img = $("<img />");
+	     img.attr({
+	        "src": "thumb.php?src="+ $(this).attr('filepath'),
+			"height" : "100",
+			"width" : "100"
+	     });
+	     $(this).html(img);
 	 });
 });
 </script>

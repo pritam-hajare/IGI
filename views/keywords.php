@@ -2,9 +2,6 @@
 <?php if(!( $_SESSION['is_admin'] ||  $_SESSION['is_moderator'])){
 	echo 'You are not authorised to access this page.';exit;
 }?>
-<?php $allKeywords = $Keywords->getKeywords();
-	if (!empty($allKeywords)) { 
-?>
 <script type="text/javascript" src="libraries/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="libraries/js/jquery.dataTables.min.js"></script>
 <link rel="stylesheet" href="libraries/css/jquery.dataTables.css"/>
@@ -33,17 +30,21 @@
          </tr>
  		</tfoot>
         <tbody>
+        <?php $allKeywords = $Keywords->getKeywords();
+			if (!empty($allKeywords)) { 
+		?>
         <?php foreach ($allKeywords as $K=>$v){ $keyid = $v['keyid']; ?>
             <tr>
                 <td><?php echo $v['keywords']; ?></td>
                 <td><?php echo $v['createdate']?></td>
                 <td><a href="<?php echo "keywords.php?action=editKeywords&keyid=$keyid"; ?>" target="_blank" /> Edit</a></td>
             </tr>
-         <?php }?>   
+         <?php }?>
+         <?php } ?>   
         </tbody>
     </table>
     </div>
-<?php } ?>
+
 <script type="text/javascript">
 $(document).ready(function() {
     // Setup - add a text input to each footer cell

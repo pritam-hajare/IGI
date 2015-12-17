@@ -2,9 +2,7 @@
 <?php if(!( $_SESSION['is_admin'] ||  $_SESSION['is_moderator'])){
 	echo 'You are not authorised to access this page.';exit;
 }?>
-<?php $allGroups = $groups->getGroups();
-	if (!empty($allGroups)) { 
-?>
+
 <script type="text/javascript" src="libraries/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="libraries/js/jquery.dataTables.min.js"></script>
 <link rel="stylesheet" href="libraries/css/jquery.dataTables.css"/>
@@ -35,6 +33,9 @@
          </tr>
  		</tfoot>
         <tbody>
+        <?php $allGroups = $groups->getGroups();
+			if (!empty($allGroups)) { 
+		?>
         <?php foreach ($allGroups as $K=>$v){ $groupid = $v['groupid']; ?>
             <tr>
                 <td><?php echo $v['groupname']; ?></td>
@@ -42,11 +43,12 @@
                 <td><?php echo $v['createdate']; ?></td>
                 <td><a href="<?php echo "groups.php?action=editGroup&groupid=$groupid"; ?>"> Edit</a></td>
             </tr>
-         <?php }?>   
+         <?php }?>
+         <?php } ?>   
         </tbody>
     </table>
 </div>
-<?php } ?>
+
 <script type="text/javascript">
 $(document).ready(function() {
     // Setup - add a text input to each footer cell

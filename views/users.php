@@ -2,9 +2,6 @@
 <?php if(!( $_SESSION['is_admin'] ||  $_SESSION['is_moderator'])){
 	echo 'You are not authorised to access this page.';exit;
 }?>
-<?php $allUsers = $users->getUsers();
-	if (!empty($allUsers)) { 
-?>
 <script type="text/javascript" src="libraries/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="libraries/js/jquery.dataTables.min.js"></script>
 <link rel="stylesheet" href="libraries/css/jquery.dataTables.css"/>
@@ -41,6 +38,9 @@
          </tr>
  		</tfoot>
         <tbody>
+        <?php $allUsers = $users->getUsers();
+			if (!empty($allUsers)) { 
+		?>
         <?php foreach ($allUsers as $K=>$v){ $user_id = $v['user_id']; ?>
             <tr>
                 <td><?php echo $v['user_name']; ?></td>
@@ -51,11 +51,11 @@
                 <td><?php echo $v['user_active'] ? 'Yes' : 'No'; ?></td>
                 <td><a href="<?php echo "users.php?action=editUser&user_id=$user_id"; ?>" target="_blank" /> Edit</a></td>
             </tr>
-         <?php }?>   
+         <?php }?>
+         <?php } ?>   
         </tbody>
     </table>
 </div>
-<?php } ?>
 <script type="text/javascript">
 $(document).ready(function() {
     // Setup - add a text input to each footer cell

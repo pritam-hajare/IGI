@@ -229,12 +229,12 @@ class Files
     														WHERE fileid = :fileid');
     		$query_update->bindValue(':user_id', $user_id);
     		$query_update->bindValue(':groupid', $groupid);
-    		$query_update->bindValue(':keywords', rtrim($keywords, ','));
-    		$query_update->bindValue(':tags', $tags);
-    		$query_update->bindValue(':caption', $caption);
-    		$query_update->bindValue(':year', $year);
-    		$query_update->bindValue(':month', $month);
-    		$query_update->bindValue(':day', $day);
+    		$query_update->bindValue(':keywords', rtrim(mysql_real_escape_string($keywords), ','));
+    		$query_update->bindValue(':tags', mysql_real_escape_string($tags));
+    		$query_update->bindValue(':caption', mysql_real_escape_string($caption));
+    		$query_update->bindValue(':year',mysql_real_escape_string($year));
+    		$query_update->bindValue(':month', mysql_real_escape_string($month));
+    		$query_update->bindValue(':day', mysql_real_escape_string($day));
     		$query_update->bindValue(':active', $active);
     		$query_update->bindValue(':moderator', $moderator);
     		$query_update->bindValue(':fileid', $fileid);
